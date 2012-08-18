@@ -1,8 +1,9 @@
 from datetime import timedelta
 import simplejson
 
+from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponseNotAllowed, HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponseNotAllowed, HttpResponse, Http404, HttpResponseBadRequest, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
@@ -32,6 +33,10 @@ def api_worklist(request, abstract_type, concrete_type):
     Since indicates the latest item we have recorded for that particular repository, e.g. the
     worker should only look for items which are newer than this time.
     """
+
+    if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
+        return HttpResponseForbidden()
+
     threshold = timezone.now() - timedelta(days=1)
 
     items = []
@@ -78,6 +83,9 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
 
     if request.method != 'POST':
         return HttpResponseNotAllowed(permitted_methods=['POST'])
+
+    if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
+        return HttpResponseForbidden()
 
     if abstract_type == 'repository':
 

@@ -1,5 +1,6 @@
 import simplejson
 
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils import timezone
@@ -7,17 +8,25 @@ from django.utils import timezone
 from .models import Repository, RepositoryActivity
 
 class APITest(TestCase):
+
+    token = '?token=%s' % settings.MOSAIC_WORKER_PRIVATE_TOKEN
+
     def test_get_worklist_item(self):
+
+        def request():
+            response = self.client.get(reverse('api_worklist', kwargs={
+                'abstract_type': 'repository',
+                'concrete_type': 'git'
+            }) + self.token)
+
+            self.assertEqual(200, response.status_code)
+
+            return simplejson.loads(response.content)
+
 
         # get the oldest element, repository 1
 
-        response = self.client.get(reverse('api_worklist', kwargs={
-            'abstract_type': 'repository',
-            'concrete_type': 'git'
-        }))
-        self.assertEqual(200, response.status_code)
-
-        json = simplejson.loads(response.content)
+        json = request()
         self.assertEqual(1, len(json))
 
         item = json[0]
@@ -30,13 +39,7 @@ class APITest(TestCase):
         repository.last_updated = timezone.now()
         repository.save()
 
-        response = self.client.get(reverse('api_worklist', kwargs={
-            'abstract_type': 'repository',
-            'concrete_type': 'git'
-        }))
-        self.assertEqual(200, response.status_code)
-
-        json = simplejson.loads(response.content)
+        json = request()
         self.assertEqual(1, len(json))
 
         item = json[0]
@@ -50,13 +53,7 @@ class APITest(TestCase):
         repository.last_updated = timezone.now()
         repository.save()
 
-        response = self.client.get(reverse('api_worklist', kwargs={
-            'abstract_type': 'repository',
-            'concrete_type': 'git'
-        }))
-        self.assertEqual(200, response.status_code)
-
-        json = simplejson.loads(response.content)
+        json = request()
         self.assertEqual(0, len(json))
 
     def test_deliver_activities_malformed(self):
@@ -64,7 +61,7 @@ class APITest(TestCase):
         response = self.client.post(reverse('api_worklist_deliver', kwargs={
             'abstract_type': 'repository',
             'concrete_type': 'git'
-        }), data={
+        }) + self.token, data={
             'payload': ''
         })
 
@@ -75,7 +72,7 @@ class APITest(TestCase):
         response = self.client.post(reverse('api_worklist_deliver', kwargs={
             'abstract_type': 'repository',
             'concrete_type': 'git'
-        }), data={
+        }) + self.token, data={
             'payload': '{"url": "http://repository1", "activities": []}'
         })
 
@@ -91,7 +88,7 @@ class APITest(TestCase):
         response = self.client.post(reverse('api_worklist_deliver', kwargs={
             'abstract_type': 'repository',
             'concrete_type': 'git'
-        }), data={
+        }) + self.token, data={
             'payload': '{"url": "http://repository1", "activities": [{"login": "%s", "date": "%s"}]}' % (login, date)
         })
 
