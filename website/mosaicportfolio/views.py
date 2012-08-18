@@ -7,22 +7,23 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseNotAllowed, HttpResponse, Http404, HttpResponseBadRequest, HttpResponseForbidden
 from django.core.urlresolvers import reverse
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Repository, RepositoryActivity
 
 def home(request):
     return render(request, "mosaicportfolio/home.html")
 
-def portfolio(request, username=None):
+@login_required
+def portfolio_redirect(request):
+    return redirect(reverse('portfolio', kwargs={'username': request.user.username}))
 
-    if username is None:
-        if request.user.is_authenticated:
-            return redirect(reverse('portfolio', kwargs={'username': request.user.username}))
-
+def portfolio(request, username):
     return render(request, "mosaicportfolio/portfolio.html")
 
+@login_required()
 def profile_edit(request):
-
     return render(request, "mosaicportfolio/profile_edit.html")
 
 def api_worklist(request, abstract_type, concrete_type):
@@ -63,6 +64,7 @@ def api_worklist(request, abstract_type, concrete_type):
 
     return HttpResponse(simplejson.dumps(items), content_type='application/json')
 
+@csrf_exempt
 def api_worklist_deliver(request, abstract_type, concrete_type):
     """
     Accepts a delivery of activities for a single repository.
