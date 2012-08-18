@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -38,15 +40,26 @@ class Repository(models.Model):
 
     url = models.CharField(max_length=200)
     kind = models.IntegerField(choices=RepositoryKind.values)
+    last_updated = models.DateTimeField()
 
     class Meta:
         verbose_name_plural = "repositories"
 
+    def save(self, *args, **kwargs):
+        """
+        Enforce a default last_updated timestamp sometime in the faraway past,
+        makes it much more simple for us to get a prioritized list of repositories
+        for processing on the back-ends.
+        """
+
+        if self.last_updated is None:
+            self.last_updated = datetime.fromtimestamp(0)
+
+        return super(Repository, self).save(*args, **kwargs)
+
     def __str__(self):
         return "%s(%s)" % (self.url, self.kind)
-    
-    def __str__(self):
-        return "%s" % self.url
+
 
 class ProjectRepository(models.Model):
     project = models.ForeignKey(Project)
@@ -68,7 +81,6 @@ class Wiki(models.Model):
 
     def __str__(self):
         return "%s(%s)" % (self.url, self.kind)
-
 
 class ProjectWiki(models.Model):
     project = models.ForeignKey(Project)
@@ -105,10 +117,11 @@ class Activity(models.Model):
         abstract = True
          
 class RepositoryActivity(Activity):
-    repository = models.ForeignKey(Repository)
+    repository = models.ForeignKey(Repository, related_name='activities')
 
     class Meta:
         verbose_name_plural = "repository activities"
+        get_latest_by = 'date'
 
     def __str__(self):
         return "%s@%s(%s)" % (self.login, self.repository, self.date)

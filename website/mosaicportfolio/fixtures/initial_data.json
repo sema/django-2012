@@ -3,8 +3,18 @@
         "pk": 1,
         "model": "mosaicportfolio.repository",
         "fields": {
-            "url": "some repository",
-            "kind": 1
+            "url": "http://repository1",
+            "kind": 1,
+            "last_updated": "1900-01-01 00:00+00:00"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "mosaicportfolio.repository",
+        "fields": {
+            "url": "http://repository2",
+            "kind": 1,
+            "last_updated": "2000-01-01 00:00+00:00"
         }
     },
     {
@@ -45,7 +55,7 @@
         "pk": 1,
         "model": "mosaicportfolio.repositoryactivity",
         "fields": {
-            "date": "2012-08-18T01:56:54Z",
+            "date": "2012-08-18T01:56:54+00:00",
             "login": "esbena",
             "repository": 1
         }
