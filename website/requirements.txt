@@ -1,6 +1,7 @@
 Django==1.4.1
 South==0.7.6
 argparse==1.2.1
+django-crispy-forms==1.1.4
 django-registration==0.8
 django-social-auth==0.7.4
 gondor==1.1.3
