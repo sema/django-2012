@@ -120,7 +120,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('portfolio') # used by legacy authentication
 
 # This is used by social-auth after a user authenticates/registers
 ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda o: reverse('portfolio', {'username': o.username})
+    'auth.user': lambda o: reverse('portfolio', kwargs={'username': o.username})
 }
 
 # A sample logging configuration. The only tangible logging

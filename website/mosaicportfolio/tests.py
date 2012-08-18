@@ -94,3 +94,18 @@ class APITest(TestCase):
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(start_activity_count+1, RepositoryActivity.objects.count())
+
+
+class UserLoginAndRegistrationTest(TestCase):
+
+    def test_user_registration(self):
+
+        response = self.client.post(reverse('registration_register'), data={
+            'username': 'testuser1',
+            'email': 'example@example.org',
+            'password1': '1234',
+            'password2': '1234'
+        })
+
+        self.assertEqual(302, response.status_code)
+
