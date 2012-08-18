@@ -5,11 +5,6 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^register/$', 'registration.views.register',
-            {'backend': 'registration.backends.simple.SimpleBackend'}, name='registration_register'),
-
-    url(r'^', include('registration.auth_urls')),
-    url(r'^', include('social_auth.urls')),
 
     url(r'^', include('mosaicportfolio.urls')),
 
