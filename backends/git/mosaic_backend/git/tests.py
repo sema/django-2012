@@ -7,6 +7,7 @@ import os
 class Test(unittest.TestCase):
     
     def setUp(self):
+        # TODO make repositories portable...
         here = os.path.abspath(os.path.dirname(__file__))
         testdata = here + "/testdata" 
         self.url = testdata + "/testrepository"
