@@ -97,6 +97,9 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
 
             repository = get_object_or_404(Repository, url=payload['url'], concrete_type=concrete_type)
 
+            repository.last_updated = timezone.now()
+            repository.save()
+
             for activity in payload['activities']:
                 RepositoryActivity.objects.create(
                     repository=repository,
