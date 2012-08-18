@@ -80,6 +80,6 @@ class IssueTrackerActivity(Activity):
 
 class WikiActivity(Activity):
     wiki = models.ForeignKey(Wiki)
-        class Meta:
+    class Meta:
         verbose_name_plural = "wiki activities"
 
