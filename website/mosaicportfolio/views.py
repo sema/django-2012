@@ -11,6 +11,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import Repository, RepositoryActivity
+import logging
+
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, "mosaicportfolio/home.html")
@@ -83,13 +86,13 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
     }
 
     """
-
+    
     if request.method != 'POST':
         return HttpResponseNotAllowed(permitted_methods=['POST'])
-
+    
     if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
         return HttpResponseForbidden()
-
+    
     if abstract_type == 'repository':
 
         try:
@@ -106,11 +109,11 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
                     date=datetime.fromtimestamp(float(activity['date']), tz=timezone.get_current_timezone()),
                     login=activity['login']
                 )
-
             return HttpResponse()
 
-        except simplejson.JSONDecodeError:
+        except simplejson.JSONDecodeError as e:
+            logger.execption(e)
             return HttpResponseBadRequest()
-
+        logger.debug("POST5")
     else:
         return Http404()

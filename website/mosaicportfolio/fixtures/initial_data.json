@@ -1,20 +1,11 @@
 [
     {
-        "pk": 1,
-        "model": "mosaicportfolio.repository",
-        "fields": {
-            "url": "http://repository1",
-            "concrete_type": "git",
-            "last_updated": "1900-01-01 00:00+00:00"
-        }
-    },
-    {
         "pk": 2,
         "model": "mosaicportfolio.repository",
         "fields": {
-            "url": "http://repository2",
+            "url": "git://github.com/sema/django-2012.git",
             "concrete_type": "git",
-            "last_updated": "2000-01-01 00:00+00:00"
+            "last_updated": "2000-01-01T00:00:00Z"
         }
     },
     {
@@ -35,29 +26,11 @@
     },
     {
         "pk": 1,
-        "model": "mosaicportfolio.projectrepository",
-        "fields": {
-            "project": 1,
-            "login": "esbena",
-            "repository": 1
-        }
-    },
-    {
-        "pk": 1,
         "model": "mosaicportfolio.projectissuetracker",
         "fields": {
             "project": 1,
             "login": "esbena",
             "issue_tracker": 1
-        }
-    },
-    {
-        "pk": 1,
-        "model": "mosaicportfolio.repositoryactivity",
-        "fields": {
-            "date": "2012-08-18T01:56:54+00:00",
-            "login": "esbena",
-            "repository": 1
         }
     },
     {
@@ -80,29 +53,11 @@
     },
     {
         "pk": 1,
-        "model": "auth.user",
-        "fields": {
-            "username": "esbena",
-            "first_name": "",
-            "last_name": "",
-            "is_active": true,
-            "is_superuser": true,
-            "is_staff": true,
-            "last_login": "2012-08-18T03:55:06.730Z",
-            "groups": [],
-            "user_permissions": [],
-            "password": "pbkdf2_sha256$10000$a1npOplpN28W$/2cvscP1nQgHWq5iV8RlO6tw8tt7MQL4BbKeagbBymc=",
-            "email": "e@s.dk",
-            "date_joined": "2012-08-18T03:53:21.262Z"
-        }
-    },
-    {
-        "pk": 1,
         "model": "mosaicportfolio.usersite",
         "fields": {
+            "concrete_type": "1",
             "login": "esbena",
-            "user": 1,
-            "concrete_type": 1
+            "user": 1
         }
     },
     {
