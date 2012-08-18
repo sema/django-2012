@@ -42,3 +42,8 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+### Social-auth API settings ###
+
+#GITHUB_APP_ID = ''
+#GITHUB_API_SECRET = ''
