@@ -7,8 +7,7 @@ logging.basicConfig()
 logging.root.setLevel(logging.DEBUG)
 
 def run(mosaic_url, repository_dir):
-    print(mosaic_url)
-    print(repository_dir)
+    # TODO kwargs for sleep time
     Worker(mosaic_url, GitManager(repository_dir)).run()
 
 if __name__ == "__main__":
