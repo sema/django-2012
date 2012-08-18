@@ -10,6 +10,5 @@
 </pydev_variables_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
 <path>/mosaic/website</path>
-<path>/mosaic/backends</path>
 </pydev_pathproperty>
 </pydev_project>
