@@ -39,4 +39,4 @@ wsgi:
         worker_class: sync
 
 django:
-	managepy: manage.py
+    managepy: manage.py
