@@ -60,18 +60,6 @@ class Test(unittest.TestCase):
         location = self.scraper._get_repository_location(url)
         self.assertTrue(location)     
         self.assertFalse("foobarbaz" in location)
-    
-    def test_repository_staling_false(self):
-        import datetime
-        repo = Repo(self.url, odbt=GitCmdObjectDB)
-        stale = self.scraper._repository_is_stale(repo, datetime.timedelta(days = 10000))
-        self.assertFalse(stale)
-    
-    def test_repository_staling_true(self):
-        import datetime
-        repo = Repo(self.url, odbt=GitCmdObjectDB)
-        stale = self.scraper._repository_is_stale(repo, datetime.timedelta(days = -10000))
-        self.assertTrue(stale)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testTest']

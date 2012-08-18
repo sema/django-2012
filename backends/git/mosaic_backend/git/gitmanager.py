@@ -40,20 +40,7 @@ class GitManager(object):
         Decides if the repository for an url exists locally
         '''
         return os.path.exists(self._get_repository_location(url))
-    
-    def _repository_is_stale(self, repo, threshold=None):
-        '''
-        Decides wether the a repository is stale and needs an update
-        '''
-        if not threshold:
-            threshold = timedelta(hours=24)
-        commit = repo.commit()
-        if not commit:
-            return True
-        last_commit = datetime.fromtimestamp(commit.committed_date)
-        time_since_last_commit = (datetime.now() - last_commit)
-        return time_since_last_commit > threshold         
-    
+       
     def get_activities(self, url, since):
         '''
         Gets all activities for a repository at a url since some date.
@@ -64,8 +51,7 @@ class GitManager(object):
         if not self._has_repository(url):
             self._clone_and_get_repo(url, location)
         repo = Repo(location, odbt=GitCmdObjectDB)
-        if self._repository_is_stale(repo):
-            self._pull(repo)
+        self._pull(repo)
         return [self._to_dict(a) for a in
                     self._repo2activities(repo, url, since)]
           
