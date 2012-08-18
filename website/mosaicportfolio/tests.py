@@ -31,7 +31,7 @@ class APITest(TestCase):
 
         item = json[0]
         self.assertEqual('http://repository1', item['url'])
-        self.assertEqual('2012-08-18T01:56:54+00:00', item['since'])
+        self.assertEqual(1345276614.0, item['since'])
 
         # now update repository 1 and see if we get the now "older" repository 2
 
@@ -83,7 +83,7 @@ class APITest(TestCase):
         start_activity_count = RepositoryActivity.objects.count()
 
         login = 'testuser'
-        date = timezone.now()
+        date = '1345276614.0'
 
         response = self.client.post(reverse('api_worklist_deliver', kwargs={
             'abstract_type': 'repository',

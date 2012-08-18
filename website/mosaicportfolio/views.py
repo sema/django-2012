@@ -1,4 +1,5 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
+import time
 import simplejson
 
 from django.conf import settings
@@ -28,7 +29,7 @@ def api_worklist(request, abstract_type, concrete_type):
     """
     Returns a list of work items (as of now this list has only one item in it at a time)
 
-    Each item is a dictionary {"url": <string>, "since": <string, date in iso-format>}
+    Each item is a dictionary {"url": <string>, "since": <string, unix timestamp>}
 
     Since indicates the latest item we have recorded for that particular repository, e.g. the
     worker should only look for items which are newer than this time.
@@ -50,7 +51,7 @@ def api_worklist(request, abstract_type, concrete_type):
         for repository in repositories:
 
             try:
-                since = repository.activities.latest().date.isoformat()
+                since = time.mktime(repository.activities.latest().date.timetuple())
             except RepositoryActivity.DoesNotExist:
                 since = None
 
@@ -73,7 +74,7 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
         "url": <string, repository url>,
         "activities": [
             {
-                "date": <string, iso formatted timestamp>,
+                "date": <string, unix timestamp>,
                 "login": <string, user identifier>
             } ...
         ]
@@ -97,7 +98,7 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
             for activity in payload['activities']:
                 RepositoryActivity.objects.create(
                     repository=repository,
-                    date=activity['date'],
+                    date=datetime.fromtimestamp(float(activity['date']), tz=timezone.get_current_timezone()),
                     login=activity['login']
                 )
 
