@@ -3,6 +3,7 @@ import time
 import urllib2
 import urllib 
 import logging
+import datetime
 
 from urllib2 import HTTPError
 class SimpleActivity(object):
@@ -13,6 +14,8 @@ class SimpleActivity(object):
         self.date = date
         self.login = login
         self.url = url
+    def __str__(self):
+        return "%s: '%s'@%s" % (self.date, self.login, self.url)
 
 logger = logging.getLogger(__name__)
 class Worker(object):
@@ -39,7 +42,7 @@ class Worker(object):
         parameters = urllib.urlencode({'token': api_key})
         common_path = "%s/api/worklist/%s/%s" % (mosaic_url, manager.abstract_activity_type, manager.concrete_activity_type)
         self.get_url = "%s?%s" % (common_path,parameters)  
-        self.post_url = "%s/deliver?%s" % (common_path, parameters)
+        self.post_url = "%s/deliver/?%s" % (common_path, parameters)
         logger.info("Initialized worker for %s" % common_path)
     
     def run(self, sleep_time=5):
@@ -53,6 +56,8 @@ class Worker(object):
             for work in work_list:
                 url = work['url']
                 since = work['since']
+                if since:
+                    since = datetime.datetime.fromtimestamp(since)
                 activities = self.manager.get_activities(url, since)
                 logger.debug("Delivering work: %s", activities)
                 self._deliver_work(activities)
@@ -65,12 +70,11 @@ class Worker(object):
         try:
             data = urllib2.urlopen(self.get_url)
         except HTTPError, e:
-            logger.error("Failed to open url: %s" % self.get_url)
-            raise e
-            #return []
+            logger.error(("Failed to open url: %s" % str(self.get_url)))
+            return []
         
         json_data = json.load(data)
-        print("%s -> %s" % (self.get_url, json_data))
+        logger.info("%s -> %s" % (self.get_url, json_data))
         return json_data   
         
     def _deliver_work(self, activities):
@@ -78,6 +82,9 @@ class Worker(object):
         Delivers completed work to the MOSAiC server
         '''
         json_data = json.dumps(activities)
-        print("%s <- %s" % (self.post_url, json_data))
-        #urllib2.urlopen(self.post_url, json_string)
+        logger.info("%s <- %s" % (self.post_url, json_data))
+        try:
+            urllib2.urlopen(self.post_url, json_data)
+        except HTTPError as e:
+            logger.error("Failed to open url: %s" % str(self.post_url))
 
