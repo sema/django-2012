@@ -7,6 +7,32 @@ class User(models.Model):
 class SiteKind:
     github = 1
     values = [(github, github)]
+
+class RepositoryKind:
+    git = 1
+    values = [(git, git)]
+
+class WikiKind:
+    github = 1
+    values = [(github, github)]
+
+class IssueTrackerKind:
+    github = 1
+    values = [(github, github)]
+
+class Repository(models.Model):
+    url = models.URLField()
+    kind = models.IntegerField(choices=RepositoryKind.values)
+    class Meta:
+        verbose_name_plural = "repositories"
+    
+class Wiki(models.Model):
+    url = models.URLField()
+    kind = models.IntegerField(choices=WikiKind.values)
+    
+class IssueTracker(models.Model):
+    url = models.URLField()
+    kind = models.IntegerField(choices=IssueTrackerKind.values)
     
 class UserSite(models.Model):
     user = models.ForeignKey(User)
@@ -35,37 +61,11 @@ class ProjectIssueTracker(models.Model):
     login = models.CharField(max_length=200)
     issue_tracker = models.ForeignKey(IssueTracker)
 
-class RepositoryKind:
-    git = 1
-    values = [(git, git)]
-    
-class Repository(models.Model):
-    url = models.URLField()
-    kind = models.IntegerField(choices=RepositoryKind.values)
-    class Meta:
-        verbose_name_plural = "repositories"
-
-class WikiKind:
-    github = 1
-    values = [(github, github)]
-    
-class Wiki(models.Model):
-    url = models.URLField()
-    kind = models.IntegerField(choices=WikiKind.values)
-
-class IssueTrackerKind:
-    github = 1
-    values = [(github, github)]
-    
-class IssueTracker(models.Model):
-    url = models.URLField()
-    kind = models.IntegerField(choices=IssueTrackerKind.values)
-
 class Activity(models.Model):
     date = models.DateTimeField()
     login = models.CharField(max_length=200)
     class Meta:
-        abstract = true
+        abstract = True
         verbose_name_plural = "activities"
         
 class RepositoryActivity(Activity):
