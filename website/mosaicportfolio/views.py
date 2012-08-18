@@ -9,6 +9,9 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 
 from .models import Repository, RepositoryActivity
+import logging
+
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, "mosaicportfolio/home.html")
@@ -34,7 +37,7 @@ def api_worklist(request, abstract_type, concrete_type):
     Since indicates the latest item we have recorded for that particular repository, e.g. the
     worker should only look for items which are newer than this time.
     """
-
+    logger.debug("GET")
     if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
         return HttpResponseForbidden()
 
@@ -81,7 +84,7 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
     }
 
     """
-
+    logger.debug("POST")
     if request.method != 'POST':
         return HttpResponseNotAllowed(permitted_methods=['POST'])
 
