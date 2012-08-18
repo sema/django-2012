@@ -4,28 +4,36 @@ import unittest
 import shutil
 import os
 
+testdata = os.path.abspath(os.path.dirname(__file__)) + "/testdata" 
+        
 class Test(unittest.TestCase):
     
     def setUp(self):
-        # TODO make repositories portable...
-        here = os.path.abspath(os.path.dirname(__file__))
-        testdata = here + "/testdata" 
         self.url = testdata + "/testrepository"
         self.live_url = 'https://github.com/sema/navtree.git'
         self.live_url_dir = testdata + "/live_repo"
-        self.scraper = gitmanager.GitManager() 
-
+        if not os.path.exists(testdata):
+            os.mkdir(testdata)
+        if not os.path.exists(self.url):
+            os.mkdir(self.url)
+        if not os.path.exists(self.live_url_dir):
+            os.mkdir(self.live_url_dir)
+        
+        self.scraper = gitmanager.GitManager(testdata) 
+    
+    def tearDown(self):
+        shutil.rmtree(testdata)
+        
     def test_scrape_single(self):
         repo = Repo(self.url, odbt=GitCmdObjectDB)
         commit = list(repo.iter_commits())[0]
-        activity = self.scraper._commit2activity(url="someurl", commit=commit)
+        activity = self.scraper._commit2activity(commit=commit)
         self.assertIsNotNone(activity)
-        self.assertIsNotNone(activity.url)
         self.assertIsNotNone(activity.login)
         self.assertIsNotNone(activity.date)
     
     def test_scrape_multi(self):
-        activities = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url)
+        activities = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB))
         self.assertTrue(activities)
     
     def test_scrape_partial(self):
@@ -35,9 +43,9 @@ class Test(unittest.TestCase):
         This is done by finding the date for the 6th most recent commit.
         And quering for that time. 
         '''
-        full = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url)
+        full = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB))
         self.assertTrue(full)
-        partial = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url,
+        partial = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB),
                                                full[5].date)
         self.assertTrue(partial)
         self.assertGreater(len(full), len(partial))
