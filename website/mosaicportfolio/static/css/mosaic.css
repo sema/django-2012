@@ -20,3 +20,18 @@ footer {
     color: #000000;
     text-decoration: none;
 }
+
+.portfolio-profile h1 {
+    font-size: 60px;
+    line-height: 1;
+}
+
+.portfolio-profile p {
+    font-size: 18px;
+    font-weight: 200;
+    line-height: 27px;
+}
+
+
+
+

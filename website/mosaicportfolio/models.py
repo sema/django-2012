@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 class SiteKind:
     github = "github"
@@ -18,6 +19,17 @@ class WikiKind:
 class IssueTrackerKind:
     github = "github"
     values = [("github", "github")]
+
+class UserProfile(models.Model):
+    user = models.ForeignKey(User)
+
+    tag_line = models.CharField(max_length=256, blank=True)
+
+def create_user_profile(**kwargs):
+    if kwargs['created']:
+        UserProfile.objects.create(user=kwargs['instance'])
+
+post_save.connect(create_user_profile, sender=User)
 
 class UserSite(models.Model):
     user = models.ForeignKey(User)

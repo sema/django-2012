@@ -115,6 +115,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+AUTH_PROFILE_MODULE = 'mosaicportfolio.UserProfile'
+
 LOGIN_URL = reverse_lazy('auth_login')
 LOGIN_REDIRECT_URL = reverse_lazy('portfolio') # used by legacy authentication
 

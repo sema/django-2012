@@ -1,1 +1,58 @@
 {% extends 'mosaicportfolio/base.html' %}
+
+{% block extraheaders %}
+<link href="{{ STATIC_URL }}css/create-ui.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.ui.custom.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.rdfquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/modernizr.custom.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/vie.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/annotate.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/hallo.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/create.js"></script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/mosaic.js"></script>
+{% endblock %}
+
+{% block content %}
+
+    <section class="row portfolio-toolbar">
+        <div class="span6"><div class="create-toolbar-left"></div>&nbsp;</div>
+        <div class="span6"><div class="create-toolbar-right">&nbsp;</div></div>
+    </section>
+
+    <section class="row portfolio-profile" about="/portfolio/profile">
+        <div class="span12">
+
+            <h1 property="name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h1>
+            <h2 property="tagline">{{ user.get_profile.tag_line }}</h2>
+
+        </div>
+
+        <div class="span12">
+        <div class="row">
+            <div class="span8">
+                <p>{{ user.get_profile.description }}</p>
+
+                <!--
+                <a href="mailto:" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
+                <a href="#" class="btn btn-primary btn-large"><i class="icon-globe icon-white"></i> Linked in</a>
+                -->
+            </div>
+
+            <div class="span4">
+                <!--
+                <div class="thumbnail">
+                    <img src="http://placehold.it/260x180" alt="">
+                </div>
+                -->
+            </div>
+        </div>
+        </div>
+    </section>
+
+{% endblock %}
