@@ -1,5 +1,7 @@
 # Django settings for mosaic project.
 
+from django.core.urlresolvers import reverse, reverse_lazy
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -55,6 +57,20 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.csrf',
+    'django.core.context_processors.static',
+
+    'django.contrib.messages.context_processors.messages',
+    "django.contrib.auth.context_processors.auth",
+
+    'social_auth.context_processors.social_auth_backends',
+    )
+
 ROOT_URLCONF = 'mosaic.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -73,12 +89,37 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'registration',
+    'social_auth',
+
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'mosaicportfolio'
 )
+
+AUTHENTICATION_BACKENDS = (
+    #'social_auth.backends.twitter.TwitterBackend',
+    #'social_auth.backends.facebook.FacebookBackend',
+    #'social_auth.backends.google.GoogleOAuth2Backend',
+    #'social_auth.backends.yahoo.YahooBackend',
+    #'social_auth.backends.contrib.linkedin.LinkedinBackend',
+    'social_auth.backends.contrib.github.GithubBackend',
+    #'social_auth.backends.contrib.live.LiveBackend',
+    #'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
+    #'social_auth.backends.OpenIDBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+LOGIN_URL = reverse_lazy('auth_login')
+LOGIN_REDIRECT_URL = reverse_lazy('portfolio') # used by legacy authentication
+
+# This is used by social-auth after a user authenticates/registers
+ABSOLUTE_URL_OVERRIDES = {
+    'auth.user': lambda o: reverse('portfolio', {'username': o.username})
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

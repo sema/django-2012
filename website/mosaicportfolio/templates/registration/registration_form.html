@@ -1,0 +1,10 @@
+{% extends 'mosaicportfolio/base.html' %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form }}
+    <input type="submit" name="register" value="Register" />
+    </form>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>MOSAiC</title>
+</head>
+<body>
+
+<h1>MOSAiC</h1>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}. Thanks for logging in.
+        <a href="{% url profile_edit %}">Edit your profile here.</a>
+        <a href="{% url auth_logout %}">Logout</a></p>
+{% else %}
+    <p>Welcome, new user. Please <a href="{% url auth_login %}">log in</a> or <a href="{% url registration_register %}">register</a>.</p>
+    {% for name in social_auth.backends %}
+        <li><a rel="nofollow" href="{% url socialauth_begin backend=name %}">{{ name|title }}</a></li>
+    {% endfor %}
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+
+</body>
+</html>
