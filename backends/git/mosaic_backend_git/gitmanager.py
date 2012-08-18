@@ -1,8 +1,9 @@
 from datetime import timedelta, datetime
 from git import GitCmdObjectDB, Repo
-from mosaic_backend.worker import SimpleActivity
+from mosaic_backend.activity import SimpleActivity
 import logging
 import os
+
 logger = logging.getLogger(__name__)
 class GitManager(object):
     '''
@@ -102,7 +103,7 @@ class GitManager(object):
         """
         Pulls the specified repository 
         """
-        remote = repo.remote()
+        logger.debug("REPO: %s" % repo)
         repo.remote().pull()
         # TODO make branches work?
 #        for ref in remote.refs:
@@ -119,9 +120,9 @@ class GitManager(object):
         from subprocess import call
         # TODO git api does not work here?!
         logger.debug("Cloning from %s to %s" % (clone_url, location))
-        exit = call(["git", "clone", "--no-checkout", clone_url, location])
+        exit_status = call(["git", "clone", "--no-checkout", clone_url, location])
         
-        if exit == 0:
+        if exit_status == 0:
             logger.info("Cloned from %s to %s" % (clone_url, location))
         else:
             raise Exception("Failed to clone from %s to %s" % (clone_url, location));

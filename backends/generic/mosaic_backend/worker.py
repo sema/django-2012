@@ -1,20 +1,11 @@
-import json
-import time
-import urllib2
-import urllib 
-import logging
-import datetime
-
 from urllib2 import HTTPError
-class SimpleActivity(object):
-    '''
-    Simple wrapper object for a commit.
-    '''
-    def __init__(self, date, login):
-        self.date = date
-        self.login = login
-    def __str__(self):
-        return "%s: '%s'@%s" % (self.date, self.login)
+import datetime
+import json
+import logging
+import time
+import urllib
+import urllib2
+
 
 logger = logging.getLogger(__name__)
 class Worker(object):
@@ -68,7 +59,7 @@ class Worker(object):
         '''
         try:
             data = urllib2.urlopen(self.get_url)
-        except HTTPError, e:
+        except HTTPError:
             logger.error(("Failed to open url: %s" % str(self.get_url)))
             return []
         
@@ -84,6 +75,6 @@ class Worker(object):
         logger.info("%s <- %s" % (self.post_url, json_data))
         try:
             urllib2.urlopen(self.post_url, urllib.urlencode({'payload': json_data}))
-        except HTTPError as e:
+        except HTTPError:
             logger.error("Failed to open url: %s" % str(self.post_url))
 
