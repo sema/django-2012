@@ -24,6 +24,14 @@ def profile_edit(request):
     return render(request, "mosaicportfolio/profile_edit.html")
 
 def api_worklist(request, abstract_type, concrete_type):
+    """
+    Returns a list of work items (as of now this list has only one item in it at a time)
+
+    Each item is a dictionary {"url": <string>, "since": <string, date in iso-format>}
+
+    Since indicates the latest item we have recorded for that particular repository, e.g. the
+    worker should only look for items which are newer than this time.
+    """
     threshold = timezone.now() - timedelta(days=1)
 
     items = []
@@ -50,6 +58,23 @@ def api_worklist(request, abstract_type, concrete_type):
     return HttpResponse(simplejson.dumps(items), content_type='application/json')
 
 def api_worklist_deliver(request, abstract_type, concrete_type):
+    """
+    Accepts a delivery of activities for a single repository.
+
+    A post request is accepted with the POST parameter "payload", which must be a
+    JSON formatted dictionary with the following contents:
+
+    {
+        "url": <string, repository url>,
+        "activities": [
+            {
+                "date": <string, iso formatted timestamp>,
+                "login": <string, user identifier>
+            } ...
+        ]
+    }
+
+    """
 
     if request.method != 'POST':
         return HttpResponseNotAllowed(permitted_methods=['POST'])
