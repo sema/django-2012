@@ -38,7 +38,7 @@ def api_worklist(request, abstract_type, concrete_type):
     Since indicates the latest item we have recorded for that particular repository, e.g. the
     worker should only look for items which are newer than this time.
     """
-    logger.debug("GET")
+
     if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
         return HttpResponseForbidden()
 
@@ -86,13 +86,13 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
     }
 
     """
-    logger.debug("POST")
+    
     if request.method != 'POST':
         return HttpResponseNotAllowed(permitted_methods=['POST'])
-
+    
     if not request.GET.has_key('token') or request.GET.get('token') != settings.MOSAIC_WORKER_PRIVATE_TOKEN:
         return HttpResponseForbidden()
-
+    
     if abstract_type == 'repository':
 
         try:
@@ -106,11 +106,11 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
                     date=datetime.fromtimestamp(float(activity['date']), tz=timezone.get_current_timezone()),
                     login=activity['login']
                 )
-
             return HttpResponse()
 
-        except simplejson.JSONDecodeError:
+        except simplejson.JSONDecodeError as e:
+            logger.execption(e)
             return HttpResponseBadRequest()
-
+        logger.debug("POST5")
     else:
         return Http404()

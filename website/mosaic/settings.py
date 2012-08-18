@@ -166,6 +166,11 @@ LOGGING = {
         },              
     },
     'loggers': {
+        '' : {
+              'handlers': ['console'],
+              'level': 'DEBUG',
+              'propagate': True
+        },
         'mosaicportfolio': {
             'handlers': ['default', 'console', 'mail_admins'],
             'level': 'DEBUG',

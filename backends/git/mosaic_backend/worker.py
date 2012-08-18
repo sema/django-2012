@@ -10,12 +10,11 @@ class SimpleActivity(object):
     '''
     Simple wrapper object for a commit.
     '''
-    def __init__(self, date, login, url,):
+    def __init__(self, date, login):
         self.date = date
         self.login = login
-        self.url = url
     def __str__(self):
-        return "%s: '%s'@%s" % (self.date, self.login, self.url)
+        return "%s: '%s'@%s" % (self.date, self.login)
 
 logger = logging.getLogger(__name__)
 class Worker(object):
@@ -60,7 +59,7 @@ class Worker(object):
                     since = datetime.datetime.fromtimestamp(since)
                 activities = self.manager.get_activities(url, since)
                 logger.debug("Delivering work: %s", activities)
-                self._deliver_work(activities)
+                self._deliver_work(activities, url)
             time.sleep(sleep_time)
     
     def _get_work(self):
@@ -77,14 +76,14 @@ class Worker(object):
         logger.info("%s -> %s" % (self.get_url, json_data))
         return json_data   
         
-    def _deliver_work(self, activities):
+    def _deliver_work(self, activities, url):
         '''
         Delivers completed work to the MOSAiC server
         '''
-        json_data = json.dumps(activities)
+        json_data = json.dumps({'activities': activities, 'url': url})
         logger.info("%s <- %s" % (self.post_url, json_data))
         try:
-            urllib2.urlopen(self.post_url, json_data)
+            urllib2.urlopen(self.post_url, urllib.urlencode({'payload': json_data}))
         except HTTPError as e:
             logger.error("Failed to open url: %s" % str(self.post_url))
 

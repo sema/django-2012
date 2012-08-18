@@ -23,7 +23,7 @@ class GitManager(object):
 
     def _to_dict(self, activity):
         import time
-        return {'url': activity.url, 'date': time.mktime(activity.date.timetuple()), 'login': activity.login.email}
+        return {'date': time.mktime(activity.date.timetuple()), 'login': activity.login.email}
 
     def _get_repository_location(self, url):
         '''
@@ -59,7 +59,7 @@ class GitManager(object):
             repo = Repo(location, odbt=GitCmdObjectDB)
             self._pull(repo)
             return [self._to_dict(a) for a in
-                        self._repo2activities(repo, url, since)]
+                        self._repo2activities(repo, since)]
         except Exception as e:
             logger.exception(e)
             return []
@@ -73,23 +73,21 @@ class GitManager(object):
         utc_date = date + delta
         return utc_date
         
-    def _commit2activity(self, commit, url):
+    def _commit2activity(self, commit):
         """
         Simple mapping function
         """
         activity = SimpleActivity(date=self._get_commit_time(commit),
-                login=commit.committer,
-                url=url)
+                login=commit.committer)
         return activity
 
-    # TODO remove redundant url requirement, it should be extractable from repo?     
-    def _repo2activities(self, repo, url, since=None):
+    def _repo2activities(self, repo, since=None):
         """
         Reads the complete history of the repository at the specified repository.
         Optionally, only the history since a certain date is read. 
         """
         commits = repo.iter_commits()
-        simple_activities = [self._commit2activity(commit, url) for commit in commits]
+        simple_activities = [self._commit2activity(commit) for commit in commits]
         
         if since:
             # TODO make git-python use the 'since' arg instead!??!
