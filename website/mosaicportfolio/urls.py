@@ -10,7 +10,8 @@ urlpatterns = patterns('mosaicportfolio.views',
     url(r'^api/worklist/(?P<abstract_type>\w+)/(?P<concrete_type>\w+)/', 'api_worklist', name='api_worklist'),
 
     url(r'^register/$', registration.views.register,
-            {'backend': 'registration.backends.simple.SimpleBackend'}, name='registration_register'),
+            {'backend': 'registration.backends.simple.SimpleBackend',
+             'form_class': forms.RegistrationForm}, name='registration_register'),
 
     url(r'^login/$', auth_views.login,
             {'template_name': 'registration/login.html',
