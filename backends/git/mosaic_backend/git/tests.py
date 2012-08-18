@@ -1,5 +1,5 @@
-import GitManager
 from git import GitCmdObjectDB, Repo
+import gitmanager
 import unittest
 import shutil
 import os
@@ -13,11 +13,8 @@ class Test(unittest.TestCase):
         self.url = testdata + "/testrepository"
         self.live_url = 'https://github.com/sema/navtree.git'
         self.live_url_dir = testdata + "/live_repo"
-        self.scraper = GitManager.GitManager() 
+        self.scraper = gitmanager.GitManager() 
 
-    def testTest(self):
-        pass
-    
     def test_scrape_single(self):
         repo = Repo(self.url, odbt=GitCmdObjectDB)
         commit = list(repo.iter_commits())[0]
@@ -28,7 +25,7 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(activity.date)
     
     def test_scrape_multi(self):
-        activities = self.scraper.repo2activities(self.url)
+        activities = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url)
         self.assertTrue(activities)
     
     def test_scrape_partial(self):
@@ -38,10 +35,10 @@ class Test(unittest.TestCase):
         This is done by finding the date for the 6th most recent commit.
         And quering for that time. 
         '''
-        full = self.scraper.repo2activities(url=self.url)
+        full = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url)
         self.assertTrue(full)
-        partial = self.scraper.repo2activities(url=self.url,
-                                               since=full[5].date)
+        partial = self.scraper._repo2activities(Repo(self.url, odbt=GitCmdObjectDB), self.url,
+                                               full[5].date)
         self.assertTrue(partial)
         self.assertGreater(len(full), len(partial))
         self.assertEqual(5, len(partial))
@@ -49,15 +46,33 @@ class Test(unittest.TestCase):
     def test_clone(self):
         clone_url = self.live_url
         repo_dir = self.live_url_dir
-        if(os.path.exists(repo_dir)):
+        if os.path.exists(repo_dir):
             shutil.rmtree(repo_dir)
         os.mkdir(repo_dir)
-        repo = self.scraper.clone_and_get_repo(clone_url, repo_dir)
+        repo = self.scraper._clone_and_get_repo(clone_url, repo_dir)
         self.assertIsNotNone(repo)
     
     def test_can_pull(self):
-        self.scraper.pull(Repo(self.live_url_dir))
-        
+        self.scraper._pull(Repo(self.live_url_dir))
+    
+    def test_repository_naming(self):
+        url = "foobarbaz"
+        location = self.scraper._get_repository_location(url)
+        self.assertTrue(location)     
+        self.assertFalse("foobarbaz" in location)
+    
+    def test_repository_staling_false(self):
+        import datetime
+        repo = Repo(self.url, odbt=GitCmdObjectDB)
+        stale = self.scraper._repository_is_stale(repo, datetime.timedelta(days = 10000))
+        self.assertFalse(stale)
+    
+    def test_repository_staling_true(self):
+        import datetime
+        repo = Repo(self.url, odbt=GitCmdObjectDB)
+        stale = self.scraper._repository_is_stale(repo, datetime.timedelta(days = -10000))
+        self.assertTrue(stale)
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testTest']
     unittest.main()
