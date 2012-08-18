@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>mosaic_backend_git</name>
+	<name>mosaic_backend</name>
 	<comment></comment>
 	<projects>
-		<project>mosaic_backend</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
