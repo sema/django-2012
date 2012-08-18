@@ -92,6 +92,7 @@ INSTALLED_APPS = (
 
     'registration',
     'social_auth',
+    'south',
 
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
