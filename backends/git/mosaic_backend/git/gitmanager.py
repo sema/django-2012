@@ -46,7 +46,7 @@ class GitManager(object):
         Decides wether the a repository is stale and needs an update
         '''
         if not threshold:
-            threshold = datetime.timedelta(hours=24)
+            threshold = timedelta(hours=24)
         commit = repo.commit()
         if not commit:
             return True
@@ -61,7 +61,7 @@ class GitManager(object):
         Might clone og pull from remote repositories.
         '''
         location = self._get_repository_location(url)
-        if not self._has_repository_at_location(location):
+        if not self._has_repository(url):
             self._clone_and_get_repo(url, location)
         repo = Repo(location, odbt=GitCmdObjectDB)
         if self._repository_is_stale(repo):

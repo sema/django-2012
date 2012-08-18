@@ -1,7 +1,10 @@
 import json
 import time
 import urllib2
+import urllib 
 import logging
+
+from urllib2 import HTTPError
 class SimpleActivity(object):
     '''
     Simple wrapper object for a commit.
@@ -31,10 +34,12 @@ class Worker(object):
         A method: get_activies(url, since) : [activity-dict] is required 
       
         '''
+        api_key = "SUPER_SECRET"
         self.manager = manager
-        common_path = "%s/worklist/%s/%s" % (mosaic_url, manager.abstract_activity_type, manager.concrete_activity_type)
-        self.get_url = common_path 
-        self.post_url = "%s/deliver" % common_path
+        parameters = urllib.urlencode({'token': api_key})
+        common_path = "%s/api/worklist/%s/%s" % (mosaic_url, manager.abstract_activity_type, manager.concrete_activity_type)
+        self.get_url = "%s?%s" % (common_path,parameters)  
+        self.post_url = "%s/deliver?%s" % (common_path, parameters)
         logger.info("Initialized worker for %s" % common_path)
     
     def run(self, sleep_time=5):
@@ -56,8 +61,14 @@ class Worker(object):
     def _get_work(self):
         '''
         Requests work from the MOSAiC server
-        '''        
-        data = urllib2.urlopen(self.get_url)
+        '''
+        try:
+            data = urllib2.urlopen(self.get_url)
+        except HTTPError, e:
+            logger.error("Failed to open url: %s" % self.get_url)
+            raise e
+            #return []
+        
         json_data = json.load(data)
         print("%s -> %s" % (self.get_url, json_data))
         return json_data   
