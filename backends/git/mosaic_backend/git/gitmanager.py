@@ -16,7 +16,7 @@ class GitManager(object):
     '''
 
     def __init__(self):
-        self.repository_directory = "repositories"
+        self.repository_directory = "repositories" # TODO configure this
         self.concrete_activity_type = 'git'
         self.abstract_activity_type = 'repository'
         logger.debug("Initialized GitManager")
