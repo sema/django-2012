@@ -4,28 +4,28 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class SiteKind:
-    github = 1
-    values = [(github, "github")]       
+    github = "github"
+    values = [("github", "github")]
 
 class RepositoryKind:
-    git = 1
-    values = [(git, "git")]
+    git = "git"
+    values = [("git", "git")]
 
 class WikiKind:
-    github = 1
-    values = [(github, "github")]
+    github = "github"
+    values = [("github", "github")]
 
 class IssueTrackerKind:
-    github = 1
-    values = [(github, "github")]
+    github = "github"
+    values = [("github", "github")]
 
 class UserSite(models.Model):
     user = models.ForeignKey(User)
     login = models.CharField(max_length=200)
-    kind = models.IntegerField(choices=SiteKind.values)
+    concrete_type = models.CharField(max_length=16, choices=SiteKind.values)
 
     def __str__(self):
-        return "%s: %s@%s" % (self.user, self.login, self.kind)
+        return "%s: %s@%s" % (self.user, self.login, self.concrete_type)
 
 class Project(models.Model):
     user = models.ForeignKey(User)
@@ -39,11 +39,12 @@ class Repository(models.Model):
     projects = models.ManyToManyField(Project, through='ProjectRepository')
 
     url = models.CharField(max_length=200)
-    kind = models.IntegerField(choices=RepositoryKind.values)
+    concrete_type = models.CharField(max_length=16, choices=RepositoryKind.values)
     last_updated = models.DateTimeField()
 
     class Meta:
         verbose_name_plural = "repositories"
+        unique_together = [('concrete_type', 'url')]
 
     def save(self, *args, **kwargs):
         """
@@ -58,7 +59,7 @@ class Repository(models.Model):
         return super(Repository, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "%s(%s)" % (self.url, self.kind)
+        return "%s(%s)" % (self.url, self.concrete_type)
 
 
 class ProjectRepository(models.Model):
@@ -77,10 +78,10 @@ class Wiki(models.Model):
     projects = models.ManyToManyField(Project, through='ProjectWiki')
 
     url = models.CharField(max_length=200)
-    kind = models.IntegerField(choices=WikiKind.values)
+    concrete_type = models.CharField(max_length=16, choices=WikiKind.values)
 
     def __str__(self):
-        return "%s(%s)" % (self.url, self.kind)
+        return "%s(%s)" % (self.url, self.concrete_type)
 
 class ProjectWiki(models.Model):
     project = models.ForeignKey(Project)
@@ -95,10 +96,10 @@ class IssueTracker(models.Model):
     projects = models.ManyToManyField(Project, through='ProjectIssueTracker')
 
     url = models.CharField(max_length=200)
-    kind = models.IntegerField(choices=IssueTrackerKind.values)
+    concrete_type = models.CharField(max_length=16, choices=IssueTrackerKind.values)
 
     def __str__(self):
-        return "%s(%s)" % (self.url, self.kind)
+        return "%s(%s)" % (self.url, self.concrete_type)
 
 class ProjectIssueTracker(models.Model):
     project = models.ForeignKey(Project)

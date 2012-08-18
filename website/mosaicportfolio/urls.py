@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('mosaicportfolio.views',
-    url(r'^api/worklist/(?P<type>\w+)/deliver/', 'api_worklist_deliver', name='api_worklist_deliver'),
-    url(r'^api/worklist/(?P<type>\w+)/', 'api_worklist', name='api_worklist'),
+    url(r'^api/worklist/(?P<abstract_type>\w+)/(?P<concrete_type>\w+)/deliver/', 'api_worklist_deliver', name='api_worklist_deliver'),
+    url(r'^api/worklist/(?P<abstract_type>\w+)/(?P<concrete_type>\w+)/', 'api_worklist', name='api_worklist'),
 
     url(r'^editprofile/', 'profile_edit', name='profile_edit'),
 

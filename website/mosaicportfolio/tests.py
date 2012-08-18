@@ -4,14 +4,17 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.utils import timezone
 
-from .models import Repository
+from .models import Repository, RepositoryActivity
 
 class APITest(TestCase):
     def test_get_worklist_item(self):
 
         # get the oldest element, repository 1
 
-        response = self.client.get(reverse('api_worklist', kwargs={'type': 'repository'}))
+        response = self.client.get(reverse('api_worklist', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }))
         self.assertEqual(200, response.status_code)
 
         json = simplejson.loads(response.content)
@@ -27,7 +30,10 @@ class APITest(TestCase):
         repository.last_updated = timezone.now()
         repository.save()
 
-        response = self.client.get(reverse('api_worklist', kwargs={'type': 'repository'}))
+        response = self.client.get(reverse('api_worklist', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }))
         self.assertEqual(200, response.status_code)
 
         json = simplejson.loads(response.content)
@@ -44,8 +50,50 @@ class APITest(TestCase):
         repository.last_updated = timezone.now()
         repository.save()
 
-        response = self.client.get(reverse('api_worklist', kwargs={'type': 'repository'}))
+        response = self.client.get(reverse('api_worklist', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }))
         self.assertEqual(200, response.status_code)
 
         json = simplejson.loads(response.content)
         self.assertEqual(0, len(json))
+
+    def test_deliver_activities_malformed(self):
+
+        response = self.client.post(reverse('api_worklist_deliver', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }), data={
+            'payload': ''
+        })
+
+        self.assertEqual(400, response.status_code)
+
+    def test_deliver_empty_activities(self):
+
+        response = self.client.post(reverse('api_worklist_deliver', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }), data={
+            'payload': '{"url": "http://repository1", "activities": []}'
+        })
+
+        self.assertEqual(200, response.status_code)
+
+    def test_deliver_activities(self):
+
+        start_activity_count = RepositoryActivity.objects.count()
+
+        login = 'testuser'
+        date = timezone.now()
+
+        response = self.client.post(reverse('api_worklist_deliver', kwargs={
+            'abstract_type': 'repository',
+            'concrete_type': 'git'
+        }), data={
+            'payload': '{"url": "http://repository1", "activities": [{"login": "%s", "date": "%s"}]}' % (login, date)
+        })
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(start_activity_count+1, RepositoryActivity.objects.count())

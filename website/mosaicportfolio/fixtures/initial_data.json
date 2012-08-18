@@ -4,7 +4,7 @@
         "model": "mosaicportfolio.repository",
         "fields": {
             "url": "http://repository1",
-            "kind": 1,
+            "concrete_type": "git",
             "last_updated": "1900-01-01 00:00+00:00"
         }
     },
@@ -13,7 +13,7 @@
         "model": "mosaicportfolio.repository",
         "fields": {
             "url": "http://repository2",
-            "kind": 1,
+            "concrete_type": "git",
             "last_updated": "2000-01-01 00:00+00:00"
         }
     },
@@ -22,7 +22,7 @@
         "model": "mosaicportfolio.wiki",
         "fields": {
             "url": "some wiki url",
-            "kind": 1
+            "concrete_type": "github"
         }
     },
     {
@@ -30,7 +30,7 @@
         "model": "mosaicportfolio.issuetracker",
         "fields": {
             "url": "some url",
-            "kind": 1
+            "concrete_type": "github"
         }
     },
     {
@@ -102,7 +102,7 @@
         "fields": {
             "login": "esbena",
             "user": 1,
-            "kind": 1
+            "concrete_type": 1
         }
     },
     {
