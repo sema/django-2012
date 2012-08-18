@@ -22,6 +22,8 @@ class ProjectRepository(models.Model):
     project = models.ForeignKey(Project)
     login = models.CharField(max_length=200)
     repository = models.ForeignKey(Repository)
+    class Meta:
+        verbose_name_plural = "project repositories"
 
 class ProjectWiki(models.Model):
     project = models.ForeignKey(Project)
@@ -58,3 +60,26 @@ class IssueTrackerKind:
 class IssueTracker(models.Model):
     url = models.URLField()
     kind = models.IntegerField(choices=IssueTrackerKind.values)
+
+class Activity(models.Model):
+    date = models.DateTimeField()
+    login = models.CharField(max_length=200)
+    class Meta:
+        abstract = true
+        verbose_name_plural = "activities"
+        
+class RepositoryActivity(Activity):
+    repository = models.ForeignKey(Repository)
+    class Meta:
+        verbose_name_plural = "repository activities"
+
+class IssueTrackerActivity(Activity):
+    issue_tracker = models.ForeignKey(IssueTracker)
+    class Meta:
+        verbose_name_plural = "issue trakcer activities"
+
+class WikiActivity(Activity):
+    wiki = models.ForeignKey(Wiki)
+        class Meta:
+        verbose_name_plural = "wiki activities"
+
