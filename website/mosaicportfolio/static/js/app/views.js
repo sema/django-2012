@@ -22,7 +22,7 @@ var ProjectView = Backbone.View.extend({
 
         var graphid = this.$('.graph').attr('id');
         console.log(graphid);
-        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 400, 800, graphid);
+        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 100, 260, graphid);
     },
 
     render: function() {
