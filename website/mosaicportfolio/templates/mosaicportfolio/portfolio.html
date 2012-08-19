@@ -34,22 +34,16 @@
     <section class="row portfolio-profile">
 
         <div class="span12">
-            <span class="span6">
-	            <input type="hidden" id="user_pk" value="{{ portfolio.pk }}"/>
-            	<h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name|sanitize_html }}{% else %}{{ portfolio.username }}{% endif %}</h1>
-            	<h3 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line|sanitize_html }}</h3>
-            </span>
-	        <span class="span5">
-	            <h4>Overview</h4>
-	            <div class="thumbnail" id="usergraph">
-    	    </span>
+            <input type="hidden" id="user_pk" value="{{ portfolio.pk }}"/>
+        	<h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name|sanitize_html }}{% else %}{{ portfolio.username }}{% endif %}</h1>
+        	<h3 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line|sanitize_html }}</h3>
         </div>
 
         </div>
 
         <div class="span12">
         <div class="row">
-            <div class="span8">
+            <div class="span6">
                 <p class="editable portfolio-about">{{ portfolio.get_profile.about|sanitize_html }}</p>
 
                 <div>
@@ -61,21 +55,19 @@
                 </div>
 
             </div>
-
-            <div class="span4">
-                <!--
-                <div class="thumbnail">
-                    <img src="http://placehold.it/260x180" alt="">
-                </div>
-                -->
-            </div>
+	        <span class="span5">
+	            <h4>Overview</h4>
+	            <div class="thumbnail" id="usergraph">
+    	    </span>
         </div>
         </div>
     </section>
-
+	<div>
+		<br/>
+	</div>
     <section class="row">
 
-        <div class="span8 projects">
+        <div class="span12 projects">
 
             <a class="btn btn-primary pull-right newProject"><i class="icon-plus icon-white"></i> New Project</a>
 
@@ -87,18 +79,17 @@
             <div class="project">
                 <input type="hidden" class="project-id" value="{{ project.pk }}" />
                 <div class="row">
-                    <div class="span8">
+                    <div class="span12">
                         <h2 style="display: inline;" class="editable project-name">{{ project.name|sanitize_html }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line|sanitize_html }}</small></h2>
                         <!--<span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>-->
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="span5">
+                    <div class="span9">
                         <div class="editable project-description">
                             <p>{{ project.description|sanitize_html }}</p>
                         </div>
-
                         {% for repository in project.projectrepository_set.all %}
                             <div class="repository">
                             <form class="form-inline" class="row">
@@ -108,9 +99,9 @@
                                     <option {% ifequal repository.repository.concrete_type 'git' %}selected{% endifequal %} value="git">git</option>
                                     <option {% ifequal repository.repository.concrete_type 'hg' %}selected{% endifequal %} value="hg">hg</option>
                                 </select>
-                                <input class="repository-url span2 input-small" type="text" value="{{ repository.repository.url }}" />
-                                <input class="repository-login span2 input-small" type="text" value="{{ repository.login }}" />
-								<span class='span1 right repository-activity-count'><span class='login'>{{ repository.login_activity_count }}</span>/<span class='total'>{{ repository.activity_count }}</span></span>
+                                <input class="repository-url span3 input-small" type="text" value="{{ repository.repository.url }}" />
+                                <input class="repository-login span3 input-small" type="text" value="{{ repository.login }}" />
+								<span class='span2 right repository-activity-count'><span class='repository-activity-count-badge badge'><span class='login'>{{ repository.login_activity_count }}</span> / <span class='total'>{{ repository.activity_count }}</span> commits</span></span>
                             </form>
                             </div>
                         {% endfor %}

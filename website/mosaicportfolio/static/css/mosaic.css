@@ -43,3 +43,8 @@ footer {
 .editable-enabled {
     border-color: #EEEEEE;
 }
+
+.repository-activity-count-badge {
+    vertical-align: middle;
+    font-size: 110%;
+}
