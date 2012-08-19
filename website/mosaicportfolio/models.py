@@ -21,9 +21,16 @@ class IssueTrackerKind:
     values = [("github", "github")]
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User, related_name='profile')
+    user = models.OneToOneField(User, related_name='profile')
 
     tag_line = models.CharField(max_length=256, blank=True)
+    about = models.TextField(blank=True)
+
+class UserLink(models.Model):
+    user = models.ForeignKey(User, related_name='links')
+
+    name = models.CharField(max_length=256)
+    url = models.URLField(verify_exists=False)
 
 def create_user_profile(**kwargs):
     if kwargs['created']:
