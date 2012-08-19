@@ -1,15 +1,12 @@
 from tastypie.resources import ModelResource, Resource, fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
-<<<<<<< HEAD
 from mosaicportfolio.models import User, UserProfile, Project
 from tastypie.bundle import Bundle
 from tastypie.resources import Resource, ModelResource, fields
-=======
-
 from mosaicportfolio.models import User, UserProfile, Project
 
->>>>>>> c30fef5e1e3aba316da251447321190c17251bf9
+
 import graphing
 import logging
 
