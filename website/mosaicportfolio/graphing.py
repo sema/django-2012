@@ -5,6 +5,9 @@ from mosaicportfolio.models import RepositoryActivity, Repository, \
 import logging
 logger = logging.getLogger(__name__)
 def make_user_graph(user):
+    '''
+    Creates a Graph for all the activities of all the projects of a user.
+    '''
     project_repositories = ProjectRepository.objects.filter(project__user=user)
     grouped_activities = {}
     for prep in project_repositories:
@@ -12,6 +15,9 @@ def make_user_graph(user):
     return Graph(_("Activity graph"), TableData(grouped_activities)).to_dict()
 
 def make_project_graph(project):
+    '''
+    Creates a Graph for all the activities of a project.
+    '''
     project_repositories = ProjectRepository.objects.filter(project=project)
     grouped_activities = {}
     for prep in project_repositories:
@@ -19,7 +25,14 @@ def make_project_graph(project):
     return Graph(_("Activity graph"), TableData(grouped_activities)).to_dict()
 
 class Graph(object):
+    '''
+    The data required for constructing a Google Chart graph. 
+    '''
+    
     def __init__(self, title, table):
+        '''
+        Creates a graph with the desired title, based on the content of a Table. 
+        '''
         self.title = title
         self.table = table
     
@@ -27,10 +40,22 @@ class Graph(object):
         return {'title': self.title, 'vTitle': _("Activities"), 'hTitle': _('Time'), 'table': self.table.to_list()}
      
 class TableData(object):
+    '''
+    Class for grouping and transforming a collection of activities into a Google Charts compatible format.
+    '''
+    
     def __init__(self, grouped_actitivies):
+        '''
+        
+        '''
         self.grouped_actitivies = grouped_actitivies
     
     def to_list(self):
+        '''
+        Complex implementation: calculates the total number of activities per year-month tuple,
+         and outputs the result in a list-of-lists which represents a table.
+        '''
+
         # TODO instead of grouping here, Google Charts can group for us?!
         
         # dict: {(year, month): {name: count})
@@ -56,6 +81,7 @@ class TableData(object):
         table.append(header)
         for yearmonth in yearmonth_order:
             row = []
+            # TODO use a date, and let Google Charts do magic
             row.append("%s/%s" % (yearmonth[0], yearmonth[1]))
             for name in name_order:
                 coordinate_value = yearmonth_name_count.get(yearmonth, {}).get(name, 0)
