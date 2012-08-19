@@ -1,11 +1,19 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as auth_views
 
+from tastypie.api import Api
 import registration.views
 
 import forms
+import api
+
+v1_api = Api(api_name='v1')
+v1_api.register(api.UserProfileResource())
+v1_api.register(api.UserResource())
 
 urlpatterns = patterns('mosaicportfolio.views',
+    url(r'^api/rest/', include(v1_api.urls)),
+
     url(r'^api/worklist/(?P<abstract_type>\w+)/(?P<concrete_type>\w+)/deliver/', 'api_worklist_deliver', name='api_worklist_deliver'),
     url(r'^api/worklist/(?P<abstract_type>\w+)/(?P<concrete_type>\w+)/', 'api_worklist', name='api_worklist'),
 

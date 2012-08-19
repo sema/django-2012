@@ -21,7 +21,7 @@ class IssueTrackerKind:
     values = [("github", "github")]
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='profile')
 
     tag_line = models.CharField(max_length=256, blank=True)
 
