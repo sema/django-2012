@@ -48,3 +48,7 @@ footer {
     vertical-align: middle;
     font-size: 110%;
 }
+
+img.branding-icon {
+    height: 30px;
+}
