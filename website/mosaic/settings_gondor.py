@@ -3,12 +3,13 @@ import urlparse
 
 from .settings import *
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 CRISPY_FAIL_SILENTLY = not DEBUG
 
 ADMINS = (
-# ('Your Name', 'your_email@example.com'),
+ ('Casper S. Jensen', 'casper@svenningjensen.dk'),
+ ('Esben Andreasen', 'esbenandreasen@gmail.com')
 )
 
 MANAGERS = ADMINS
@@ -43,3 +44,5 @@ MOSAIC_WORKER_PRIVATE_TOKEN = os.environ.get('MOSAIC_WORKER_PRIVATE_TOKEN')
 
 GITHUB_APP_ID = os.environ.get('GITHUB_APP_ID')
 GITHUB_API_SECRET = os.environ.get('GITHUB_API_SECRET')
+
+GOOGLE_ANALYTICS = 'UA-300839-13'
