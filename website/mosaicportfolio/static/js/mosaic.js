@@ -8,12 +8,8 @@ $(function() {
         toolbar: 'full'
     });
 
-    $('.create-toolbar-left').html($('.create-ui-toolbar-dynamictoolarea'));
+    $('.create-toolbar-floating').html($('.create-ui-toolbar-dynamictoolarea'));
     $('.create-toolbar-right').html($('.create-ui-toolbar-statustoolarea'));
-
-    $('.create-ui-btn').each(function(index, elm) {
-        $(elm).addClass('btn btn-primary');
-    });
 
     // Fake Backbone.sync since there is no server to communicate with
     Backbone.sync = function(method, model, options) {

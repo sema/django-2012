@@ -1,7 +1,6 @@
 {% extends 'mosaicportfolio/base.html' %}
 
 {% block extraheaders %}
-<link href="{{ STATIC_URL }}css/create-ui.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
@@ -21,15 +20,15 @@
 {% block content %}
 
     <section class="row portfolio-toolbar">
-        <div class="span6"><div class="create-toolbar-left"></div>&nbsp;</div>
-        <div class="span6"><div class="create-toolbar-right">&nbsp;</div></div>
+        <div class="span6 create-toolbar-left">&nbsp;</div>
+        <div class="span6 create-toolbar-right">&nbsp;</div>
     </section>
 
     <section class="row portfolio-profile" about="/portfolio/profile">
         <div class="span12">
 
             <h1 property="name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h1>
-            <h2 property="tagline">{{ user.get_profile.tag_line }}</h2>
+            <h2>{{ user.get_profile.tag_line }}</h2>
 
         </div>
 
@@ -54,5 +53,7 @@
         </div>
         </div>
     </section>
+
+    <div class="create-toolbar-floating"></div>
 
 {% endblock %}
