@@ -92,7 +92,6 @@ INSTALLED_APPS = (
 
     'registration',
     'social_auth',
-    'south',
     'crispy_forms',
     'tastypie',
 
