@@ -1,6 +1,3 @@
-
-
-
 $(function() {
 
     var user = new User({id: 1});
