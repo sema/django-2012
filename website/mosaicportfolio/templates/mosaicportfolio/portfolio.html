@@ -1,4 +1,5 @@
 {% extends 'mosaicportfolio/base.html' %}
+{% load htmlsanitizer %}
 
 {% block extraheaders %}
 <link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
@@ -31,15 +32,15 @@
     <section class="row portfolio-profile">
         <div class="span12">
             <input type="hidden" id="user_pk" value="{{ portfolio.pk }}"/>
-            <h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name }} {{ portfolio.last_name }}{% else %}{{ portfolio.portfolioname }}{% endif %}</h1>
-            <h2 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line }}</h2>
+            <h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name|sanitize_html }}{% else %}{{ portfolio.username }}{% endif %}</h1>
+            <h2 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line|sanitize_html }}</h2>
 
         </div>
         
         <div class="span12">
         <div class="row">
             <div class="span8">
-                <p class="editable portfolio-about">{{ portfolio.get_profile.about }}</p>
+                <p class="editable portfolio-about">{{ portfolio.get_profile.about|sanitize_html }}</p>
 
                 <div>
                     <a href="mailto:{{ portfolio.email }}" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
@@ -78,14 +79,14 @@
             <input type="hidden" class="project-id" value="{{ project.pk }}" />
             <div class="row">
                 <div class="span8">
-                    <h2 style="display: inline;" class="editable project-name">{{ project.name }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line }}</small></h2>
+                    <h2 style="display: inline;" class="editable project-name">{{ project.name|sanitize_html }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line|sanitize_html }}</small></h2>
                     <!--<span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>-->
                 </div>
             </div>
 
             <div class="row">
                 <div class="span5 editable project-description">
-                    <p>{{ project.description }}</p>
+                    <p>{{ project.description|sanitize_html }}</p>
                 </div>
 
                 <div class="span3">

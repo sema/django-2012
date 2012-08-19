@@ -40,7 +40,7 @@ $(
         }
 
         function getUser(){
-            return 1;
+            return $('#user_pk').val();
         }
 
         // Set a callback to run when the Google Visualization API is loaded.
