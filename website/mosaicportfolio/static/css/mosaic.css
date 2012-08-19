@@ -34,6 +34,12 @@ footer {
 
 /** portfolio toolbar **/
 
+.editable {
+    border-width: 1px 0px 1px 0px;
+    border-style: solid;
+    border-color: transparent;
+}
+
 .editable-enabled {
-    border: solid 1px #EEEEEE;
+    border-color: #EEEEEE;
 }
