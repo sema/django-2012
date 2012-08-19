@@ -14,7 +14,7 @@ var ProjectView = Backbone.View.extend({
         if (id != undefined && id != '') {
             this.model = new Project({
                 id: id,
-                resource_uri: '/api/rest/v1/project/' + id
+                resource_uri: '/api/rest/v1/project/' + id + '/'
             });
         } else {
             this.model = new Project();
