@@ -11,6 +11,6 @@ Currently, sources are implemented for git and mercurial repositories, with addi
 
 The website itself focuses on presenting the portfolio as clearly as possible, while providing a nice in-line editing mode for updating portfolios. The current version contains some quirks in the in-line editing implementation, and is a bit excessive with calls to the REST interface. 
 
-This project was written in 48 hours as part of [django-dash][dash] 2012.
+This project was written in 48 hours as part of [django-dash 2012][dash].
 
 [dash]: http://djangodash.com/
