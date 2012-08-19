@@ -10,10 +10,6 @@ var Project = Backbone.Model.extend({
     urlRoot: '/api/rest/v1/project/'
 });
 
-var Projects = Backbone.Model.extend({
-    urlRoot: '/api/rest/v1/project/'
-});
-
 var ApplicationState = Backbone.Model.extend({
 
 });

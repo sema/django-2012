@@ -74,18 +74,18 @@
             <div class="project-list">
             {% for project in portfolio.projects.all %}
 
+            <div class="project">
+            <input type="hidden" class="project-id" value="{{ project.pk }}" />
             <div class="row">
                 <div class="span8">
-                    <h2>{{ project.name }} <small>{{ project.tag_line }}</small></h2>
-                    <span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>
+                    <h2 style="display: inline;" class="editable project-name">{{ project.name }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line }}</small></h2>
+                    <!--<span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>-->
                 </div>
             </div>
 
             <div class="row">
-                <div class="span5">
+                <div class="span5 editable project-description">
                     <p>{{ project.description }}</p>
-
-                    <a href="#">more...</a>
                 </div>
 
                 <div class="span3">
@@ -94,6 +94,7 @@
                         <h5>Activity between 2009-2012</h5>
                     </div>
                 </div>
+            </div>
             </div>
 
             {% empty %}
@@ -111,9 +112,10 @@
 
             <div class="project-sample">
             <input type="hidden" class="project-id" value="" />
+
                 <div class="row">
                     <div class="span8">
-                        <h2 class="editable project-name">Project name</h2><small class="editable project-tagline">short description</small>
+                        <h2 style="display: inline;" class="editable project-name">Project name</h2> <h2 style="display: inline;"><small class="editable project-tagline">and short tagline</small></h2>
                     </div>
                 </div>
 

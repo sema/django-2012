@@ -11,15 +11,13 @@ var ProjectView = Backbone.View.extend({
 
         var id = this.$('.project-id').val();
 
-        if (id != '') {
+        if (id != undefined && id != '') {
             this.model = new Project({
                 id: id,
-                user: this.userModel.get('resource_uri')
+                resource_uri: '/api/rest/v1/project/' + id
             });
         } else {
-            this.model = new Project({
-                user: this.userModel.get('resource_uri')
-            });
+            this.model = new Project();
         }
     },
 
@@ -28,12 +26,13 @@ var ProjectView = Backbone.View.extend({
     },
 
     save: function() {
+
         this.model.set('name', this.$('.project-name').html());
         this.model.set('tag_line', this.$('.project-tagline').html());
         this.model.set('description', this.$('.project-description').html());
-
+        this.model.set('user', this.userModel.get('resource_uri'));
         this.model.save();
-
+        this.model.fetch();
     }
 
 });
@@ -54,6 +53,15 @@ var ProjectsView = Backbone.View.extend({
         this.userModel = options.userModel;
 
         $('.project-sample').hide();
+
+        var that = this;
+        $('.project').each(function(index, elm) {
+            new ProjectView({
+                el: $(elm),
+                applicationState: that.applicationState,
+                userModel: that.userModel
+            }).render();
+        });
     },
 
     render: function() {
