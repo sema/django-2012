@@ -4,45 +4,51 @@
 <link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
 
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.ui.custom.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.rdfquery.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/modernizr.custom.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/underscore.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/backbone.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/vie.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/annotate.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/hallo.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/create.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.tastypie.js"></script>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/mosaic.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/hallo.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/graphing.js"></script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/models.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/views.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/init.js"></script>
 {% endblock %}
 
 {% block content %}
 
     <section class="row portfolio-toolbar">
         <div class="span6 create-toolbar-left">&nbsp;</div>
-        <div class="span6 create-toolbar-right">&nbsp;</div>
+        <div class="span6 create-toolbar-right">
+            <a class="btn btn-primary pull-right doEdit"><i class="icon-edit icon-white"></i> Edit</a>
+            <a class="btn btn-primary pull-right doSave"><i class="icon-edit icon-white"></i> Save</a>
+        </div>
     </section>
 
-    <section class="row portfolio-profile" about="/portfolio/profile">
+    <section class="row portfolio-profile">
         <div class="span12">
 
-            <h1 property="name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h1>
-            <h2>{{ user.get_profile.tag_line }}</h2>
+            <h1 class="editable portfolio-name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h1>
+            <h2 class="editable portfolio-tagline">{{ user.get_profile.tag_line }}</h2>
 
         </div>
         
         <div class="span12">
         <div class="row">
             <div class="span8">
-                <p>{{ user.get_profile.description }}</p>
+                <p class="editable portfolio-about">{{ user.get_profile.about }}</p>
 
-                <!--
-                <a href="mailto:" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
-                <a href="#" class="btn btn-primary btn-large"><i class="icon-globe icon-white"></i> Linked in</a>
-                -->
+                <div>
+                    <a href="mailto:{{ user.email }}" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
+
+                    {% for link in user.links.all %}
+                        <a href="#" class="btn btn-primary btn-large"><i class="icon-globe icon-white"></i> Linked in</a>
+                    {% endfor %}
+                </div>
+
                 <div id='graph'/>
             </div>
 
@@ -57,6 +63,5 @@
         </div>
     </section>
 
-    <div class="create-toolbar-floating"></div>
 {% endblock %}
 

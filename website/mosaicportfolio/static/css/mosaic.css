@@ -34,40 +34,6 @@ footer {
 
 /** portfolio toolbar **/
 
-.create-ui-toolbar-statustoolarea {
-    float: right;
-}
-
-.create-ui-dynamictools li {
-    display: block;
-    float: left;
-}
-
-.create-ui-statustools li {
-    display: block;
-    float: left;
-}
-
-.create-ui-btn-small {
-    border: none;
-    background-color: transparent;
-    color: #ffffff;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 14px;
-    line-height: 20px;
-    margin-bottom: 0;
-    padding: 4px 4px;
-    text-align: center;
-    /*text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);*/
-    vertical-align: middle;
-    margin-left: 2px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
-}
-
-input[type="checkbox"].create-ui-btn-small {
-    display: none !important;
+.editable-enabled {
+    border: solid 1px #EEEEEE;
 }
