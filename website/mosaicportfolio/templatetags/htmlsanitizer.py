@@ -14,7 +14,7 @@ def sanitize_html(value):
         value = bleach.clean(value,
             tags=settings.HTML_SANITIZER_ALLOWED_TAGS,
             attributes=settings.HTML_SANITIZER_ALLOWED_ATTR,
-            strip=False)
+            strip=True)
 
         return mark_safe(value)
 

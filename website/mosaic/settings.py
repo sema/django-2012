@@ -69,6 +69,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
 
     'social_auth.context_processors.social_auth_backends',
+
+    'mosaicportfolio.context_processors.google_analytics'
     )
 
 ROOT_URLCONF = 'mosaic.urls'
@@ -184,5 +186,5 @@ LOGGING = {
     },
 }
 
-HTML_SANITIZER_ALLOWED_TAGS = ['div', 'p', 'br']
+HTML_SANITIZER_ALLOWED_TAGS = ['br']
 HTML_SANITIZER_ALLOWED_ATTR = []
