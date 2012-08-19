@@ -1,3 +1,7 @@
+var Repository = Backbone.Model.extend({
+    urlRoot: '/api/rest/v1/repository/'
+});
+
 var User = Backbone.Model.extend({
     urlRoot: '/api/rest/v1/user/'
 });

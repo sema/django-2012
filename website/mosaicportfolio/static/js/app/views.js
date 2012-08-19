@@ -1,30 +1,104 @@
 
+var RepositoryView = Backbone.View.extend({
+
+    projectUri: null,
+    applicationState: null,
+
+    initialize: function(options) {
+        this.id = this.$('.repository-id').val();
+
+        this.projectUri = options.projectUri;
+
+        this.applicationState = options.applicationState;
+        this.applicationState.on('save', this.save, this);
+        this.applicationState.on('change', this.render, this);
+    },
+
+    render: function() {
+        if (this.applicationState.get('editMode')) {
+            this.$el.show();
+        } else {
+            this.$el.hide();
+        }
+
+
+    },
+
+    save: function() {
+        if (this.$('.repository-url').val() == '' || this.$('.repository-login').val() == '') {
+            return;
+        }
+
+        var repository = new Repository({
+            url: this.$('.repository-url').val(),
+            concrete_type: this.$('.repository-type').val(),
+            login: this.$('.repository-login').val(),
+            project: this.projectUri
+        });
+
+        if (this.id != undefined) {
+            repository.set('resource_uri', '/api/rest/v1/repository/' + this.id + '/');
+            repository.set('id', this.id);
+        }
+
+        repository.save();
+        repository.fetch();
+    }
+
+});
+
 var ProjectView = Backbone.View.extend({
 
     userModel: null,
+    projectUri: null,
 
     initialize: function(options) {
         this.userModel = options.userModel;
 
         this.applicationState = options.applicationState;
         this.applicationState.on('save', this.save, this);
+        this.applicationState.on('change', this.render, this);
 
         var id = this.$('.project-id').val();
+        this.projectUri = '/api/rest/v1/project/' + id + '/';
 
         if (id != undefined && id != '') {
             this.model = new Project({
                 id: id,
-                resource_uri: '/api/rest/v1/project/' + id + '/'
+                resource_uri: this.projectUri
             });
             var graphid = this.$('.graph').attr('id');
             ActivityGraphing().drawProjectGraph(id, 100, 260, graphid, true);
         } else {
             this.model = new Project();
         }
+
+        var graphid = this.$('.graph').attr('id');
+
+        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 100, 260, graphid);
+
+        var that = this;
+        this.$('.repository').each(function(index, elm) {
+            repository = new RepositoryView({
+                el: $(elm),
+                applicationState: that.applicationState,
+                projectUri: that.projectUri
+            });
+
+            repository.render();
+        });
+
+        repository = new RepositoryView({
+            el: this.$('.repository-sample'),
+            applicationState: that.applicationState,
+            projectUri: that.projectUri
+        });
+
+        repository.render();
+
     },
 
     render: function() {
-
     },
 
     save: function() {
