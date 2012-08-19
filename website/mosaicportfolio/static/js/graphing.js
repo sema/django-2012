@@ -22,7 +22,7 @@ ActivityGraphing = function(){
                  {  title: compact? null: title,
                     width:width, height:height,
                     isStacked: true,
-                    legend: {position: compact ? 'none': 'top' },
+                    legend: {position: compact ? 'none': 'right' },
                     vAxis: {title: compact? null: vTitle, textColor: compact? '#ffffff': '#000000', gridlines: {count: compact? 0: 5}},
                     hAxis: {title: compact? null: hTitle, textColor: compact? '#ffffff': '#000000', gridlines: 3},
                     axisFontSize : compact? 0 : 'auto'

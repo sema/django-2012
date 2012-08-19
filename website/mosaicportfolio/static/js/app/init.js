@@ -18,6 +18,6 @@ $(function() {
       google.setOnLoadCallback(
           function(){
               portfolioPage.render();
-              ActivityGraphing().drawUserGraph(user.get('id'), 100, 360, "usergraph", false);
+              ActivityGraphing().drawUserGraph(user.get('id'), 180, 440, "usergraph", false);
           });
   });
