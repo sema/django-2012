@@ -6,8 +6,9 @@ import logging
 logging.basicConfig()
 logging.root.setLevel(logging.DEBUG)
 
-def run(mosaic_url, repository_dir):
-    Worker(mosaic_url, MercurialManager(repository_dir)).run()
+def run(mosaic_url, repository_dir, api_key):
+    Worker(mosaic_url, MercurialManager(repository_dir), api_key).run()
 
 if __name__ == "__main__":
-    run(sys.argv[1], sys.argv[2])
+    run(sys.argv[1], sys.argv[2], sys.argv[3])
+    

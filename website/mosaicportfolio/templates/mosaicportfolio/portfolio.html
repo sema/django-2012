@@ -77,7 +77,6 @@
 
             <div class="project-list">
             {% for project in portfolio.projects.all %}
-
             <div class="project">
                 <input type="hidden" class="project-id" value="{{ project.pk }}" />
                 <div class="row">
@@ -92,6 +91,11 @@
                         <div class="editable project-description">
                             <p>{{ project.description|sanitize_html }}</p>
                         </div>
+                        <div class='username-warning alert alert-info alert-block' style="margin-top: 1em;">
+            			    <p>Your username will be matched with the author of each commit in the repositories, your username might be your full name, your email, your user name or something else. Please review the log messages of your repositories, and add an entry per relevant username.</p>
+			            </div>
+
+
                         {% for repository in project.projectrepository_set.all %}
                             <div class="repository">
                             <form class="form-inline" class="row">
