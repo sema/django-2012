@@ -32,7 +32,7 @@ class APITest(TestCase):
 
         item = json[0]
         self.assertEqual('git://github.com/sema/HTTPdump.git', item['url'])
-        self.assertEqual(None, item['since'])
+        self.assertEqual(1332761170.0, item['since'])
 
         # now update repository 1 and see if we get the now "older" repository 2
 
@@ -44,8 +44,8 @@ class APITest(TestCase):
         self.assertEqual(1, len(json))
 
         item = json[0]
-        self.assertEqual('git://github.com/sema/navtree.git', item['url'])
-        self.assertEqual(None, item['since'])
+        self.assertEqual('git://github.com/sema/django-uni-form.git', item['url'])
+        self.assertEqual(1279907567.0, item['since'])
 
         # finally update repository 2, and ensure that we don't get any repositories because of the
         # 24 hour threshold
