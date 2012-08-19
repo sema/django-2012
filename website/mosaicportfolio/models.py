@@ -10,7 +10,8 @@ class SiteKind:
 
 class RepositoryKind:
     git = "git"
-    values = [("git", "git")]
+    hg = "hg"
+    values = [("git", "git"), ("hg", "hg")]
 
 class WikiKind:
     github = "github"

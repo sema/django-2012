@@ -19,7 +19,7 @@ class MercurialManager(object):
     '''
     def __init__(self, repository_directory):
         self.repository_directory = repository_directory
-        self.concrete_activity_type = 'mercurial'
+        self.concrete_activity_type = 'hg'
         self.abstract_activity_type = 'repository'
         logger.debug("Initialized MercurialManager")
  
