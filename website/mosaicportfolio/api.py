@@ -1,7 +1,7 @@
 from tastypie.resources import ModelResource, fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
-from mosaicportfolio.models import User, UserProfile
+from mosaicportfolio.models import User, UserProfile, Project
 from tastypie.bundle import Bundle
 from tastypie.resources import Resource, ModelResource, fields
 import graphing
@@ -49,6 +49,7 @@ class AbstractGraphResource(Resource):
     title = fields.CharField(attribute='title')
     hTitle = fields.CharField(attribute='hTitle')
     vTitle = fields.CharField(attribute='vTitle')
+    table = fields.ListField(attribute='table')
     
     class Meta:
         include_resource_uri = False
@@ -59,7 +60,7 @@ class UserGraphResource(AbstractGraphResource):
         resource_name = 'usergraph'
         
     def obj_get(self, request=None, **kwargs):
-        return GraphObject(initial = graphing.make_user_graph(kwargs['pk']))
+        return GraphObject(initial = graphing.make_user_graph(User.objects.get(pk=kwargs['pk'])))
 
 class ProjectGraphResource(AbstractGraphResource):
     class Meta:
@@ -67,4 +68,4 @@ class ProjectGraphResource(AbstractGraphResource):
         resource_name = 'projectgraph'
         
     def obj_get(self, request=None, **kwargs):
-        return GraphObject(initial = graphing.make_project_graph(kwargs['pk']))
+        return GraphObject(initial = graphing.make_project_graph(Project.objects.get(pk=kwargs['pk'])))

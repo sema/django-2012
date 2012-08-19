@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from .models import Repository, RepositoryActivity
+import graphing
 
 class APITest(TestCase):
 
@@ -93,8 +94,7 @@ class APITest(TestCase):
         })
 
         self.assertEqual(200, response.status_code)
-        self.assertEqual(start_activity_count+1, RepositoryActivity.objects.count())
-
+        self.assertEqual(start_activity_count + 1, RepositoryActivity.objects.count())
 
 class UserLoginAndRegistrationTest(TestCase):
 
@@ -106,6 +106,91 @@ class UserLoginAndRegistrationTest(TestCase):
             'password1': '1234',
             'password2': '1234'
         })
-
         self.assertEqual(302, response.status_code)
 
+class TableDataTest(TestCase):
+    def testEmpty(self):
+        table = graphing.TableData({}).to_list()
+        self.assertEquals([["Time"]], table)
+    
+    def testSingle(self):
+        import datetime
+        now = datetime.datetime.now()
+        projectName = "P"
+        
+        repos = Repository.objects.all()
+        activity = RepositoryActivity.objects.create(date=now, login="DrX", repository=repos[0])
+        grouped = {}
+        grouped[projectName] = [activity]
+        table = graphing.TableData(grouped).to_list()
+        self.assertEquals([["Time",                 projectName],
+                           ["%s/%s" % (now.year, now.month), 1]], table)
+    def testHorizontal(self):
+        import datetime
+        now = datetime.datetime.now()
+        projectName1 = "P1"
+        projectName2 = "P2"
+        
+        repos = Repository.objects.all()
+        activity1 = RepositoryActivity.objects.create(date=now, login="DrX", repository=repos[0])
+        activity2 = RepositoryActivity.objects.create(date=now, login="DrX", repository=repos[0])
+        grouped = {}
+        grouped[projectName1] = [activity1]
+        grouped[projectName2] = [activity2]
+        table = graphing.TableData(grouped).to_list()
+        yearmonth = "%s/%s" % (now.year, now.month)
+        self.assertEquals([["Time",  projectName1, projectName2],
+                           [yearmonth, 1, 1]], table)
+        
+    def testAccumulate(self):
+        import datetime
+        now = datetime.datetime.now()
+        projectName = "P"
+        
+        repos = Repository.objects.all()
+        activity1 = RepositoryActivity.objects.create(date=now, login="DrX", repository=repos[0])
+        activity2 = RepositoryActivity.objects.create(date=now, login="DrX", repository=repos[0])
+        grouped = {}
+        grouped[projectName] = [activity1, activity2]
+        table = graphing.TableData(grouped).to_list()
+        yearmonth = "%s/%s" % (now.year, now.month)
+        self.assertEquals([["Time",  projectName],
+                           [yearmonth, 2]], table)   
+    def testVertical(self):
+        import datetime
+        now1 = datetime.datetime.now()
+        now2 = datetime.datetime.fromtimestamp(0)
+        projectName = "P"
+        
+        repos = Repository.objects.all()
+        activity1 = RepositoryActivity.objects.create(date=now1, login="DrX", repository=repos[0])
+        activity2 = RepositoryActivity.objects.create(date=now2, login="DrX", repository=repos[0])
+        grouped = {}
+        grouped[projectName] = [activity1, activity2]
+        table = graphing.TableData(grouped).to_list()
+        yearmonth1 = "%s/%s" % (now1.year, now1.month)
+        yearmonth2 = "%s/%s" % (now2.year, now2.month)
+        self.assertEquals([["Time",  projectName],
+                           [yearmonth2, 1],
+                           [yearmonth1, 1]
+                           ], table) 
+    def testDiagonal(self):
+        import datetime
+        now1 = datetime.datetime.now()
+        now2 = datetime.datetime.fromtimestamp(0)
+        projectName1 = "P1"
+        projectName2 = "P2"
+        
+        repos = Repository.objects.all()
+        activity1 = RepositoryActivity.objects.create(date=now1, login="DrX", repository=repos[0])
+        activity2 = RepositoryActivity.objects.create(date=now2, login="DrX", repository=repos[0])
+        grouped = {}
+        grouped[projectName1] = [activity1]
+        grouped[projectName2] = [activity2]
+        table = graphing.TableData(grouped).to_list()
+        yearmonth1 = "%s/%s" % (now1.year, now1.month)
+        yearmonth2 = "%s/%s" % (now2.year, now2.month)
+        self.assertEquals([["Time",  projectName1, projectName2],
+                           [yearmonth2, 0, 1],
+                           [yearmonth1, 1, 0]
+                           ], table) 
