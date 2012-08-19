@@ -12,7 +12,7 @@ v1_api.register(api.UserProfileResource())
 v1_api.register(api.UserResource())
 v1_api.register(api.UserGraphResource())
 v1_api.register(api.ProjectGraphResource())
-v1_api.register(api.EventResource())
+v1_api.register(api.ProjectResource())
 
 urlpatterns = patterns('mosaicportfolio.views',
     url(r'^api/rest/', include(v1_api.urls)),

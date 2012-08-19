@@ -1,12 +1,25 @@
 
 var ProjectView = Backbone.View.extend({
 
+    userModel: null,
+
     initialize: function(options) {
+        this.userModel = options.userModel;
+
         this.applicationState = options.applicationState;
         this.applicationState.on('save', this.save, this);
 
-        if (this.$('.project-id').val() != '') {
-            this.mode = new
+        var id = this.$('.project-id').val();
+
+        if (id != '') {
+            this.model = new Project({
+                id: id,
+                user: this.userModel.get('resource_uri')
+            });
+        } else {
+            this.model = new Project({
+                user: this.userModel.get('resource_uri')
+            });
         }
     },
 
@@ -15,6 +28,11 @@ var ProjectView = Backbone.View.extend({
     },
 
     save: function() {
+        this.model.set('name', this.$('.project-name').html());
+        this.model.set('tag_line', this.$('.project-tagline').html());
+        this.model.set('description', this.$('.project-description').html());
+
+        this.model.save();
 
     }
 
@@ -23,6 +41,7 @@ var ProjectView = Backbone.View.extend({
 var ProjectsView = Backbone.View.extend({
 
     applicationState: null,
+    userModel: null,
 
     events: {
         'click .newProject': 'newProject'
@@ -30,8 +49,9 @@ var ProjectsView = Backbone.View.extend({
 
     initialize: function(options) {
         this.applicationState = options.applicationState;
-
         this.applicationState.on('change', this.render, this);
+
+        this.userModel = options.userModel;
 
         $('.project-sample').hide();
     },
@@ -61,7 +81,8 @@ var ProjectsView = Backbone.View.extend({
 
         new ProjectView({
             el: projectDom,
-            applicationState: this.applicationState
+            applicationState: this.applicationState,
+            userModel: this.userModel
         }).render();
 
         $('.project-list').prepend(projectDom);
@@ -99,7 +120,8 @@ var PortfolioPage = Backbone.View.extend({
 
         new ProjectsView({
             el: $('.projects'),
-            applicationState: this.applicationState
+            applicationState: this.applicationState,
+            userModel: this.userModel
         }).render();
 
     },

@@ -45,7 +45,8 @@ class GraphObject(object):
         self.__dict__['_data'][name] = value
 
     def to_dict(self):
-        return self._data    
+        return self._data
+
 class AbstractGraphResource(Resource):
     title = fields.CharField(attribute='title')
     hTitle = fields.CharField(attribute='hTitle')
@@ -70,13 +71,13 @@ class ProjectGraphResource(AbstractGraphResource):
     def obj_get(self, request=None, **kwargs):
         return GraphObject(initial = graphing.make_project_graph(kwargs['pk']))
 
-class EventResource(ModelResource):
+class ProjectResource(ModelResource):
     user = fields.ToOneField(UserResource, 'user')
 
     class Meta:
         queryset = Project.objects.all()
-        list_allowed_methods = ['get', 'put']
-        detail_allowed_methods = ['get', 'put']
+        list_allowed_methods = ['get', 'put', 'post']
+        detail_allowed_methods = ['get', 'put', 'post']
 
         authentication = Authentication()
         authorization = Authorization()
