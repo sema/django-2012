@@ -4,16 +4,16 @@
 {% block extraheaders %}
 <link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/underscore.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/backbone.tastypie.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/underscore.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/backbone.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/backbone.tastypie.js"></script>
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/hallo.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/graphing.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/hallo.js"></script>
 
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/graphing.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/app/models.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/app/views.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/app/init.js"></script>
@@ -150,14 +150,31 @@
                 </div>
 
                 <div class="row">
-                    <div class="span5 editable project-description">
+                    <div class="span5">
+                        <div class="editable project-description">
                         <p>Insert long description here</p>
+                        </div>
+
+                        <div class="repository-sample">
+                            <form class="form-inline" class="row">
+
+                                <select class="repository-type span1">
+                                    <option value="git">git</option>
+                                    <option value="hg">hg</option>
+                                </select>
+                                <input type="text" class="repository-url span2 input-small" placeholder="Repository URL" />
+                                <input type="text" class=" repository-login span2 input-small" placeholder="Commit username" />
+                            </form>
+                        </div>
+
                     </div>
 
                     <div class="span3">
 
                     </div>
                 </div>
+
+
             </div>
 
         </div>
