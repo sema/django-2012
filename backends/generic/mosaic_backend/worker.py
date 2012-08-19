@@ -5,6 +5,7 @@ import logging
 import time
 import urllib
 import urllib2
+from symbol import except_clause
 
 
 logger = logging.getLogger(__name__)
@@ -39,19 +40,24 @@ class Worker(object):
         '''
         main loop for performing work for the MOSAiC server
         '''
+        import sys
         while(True):
-            work_list = self._get_work()
-            logger.info("Received work_list of size: %s" % len(work_list))
-            logger.debug("Received work_list: %s", work_list)
-            for work in work_list:
-                url = work['url']
-                since = work['since']
-                if since:
-                    since = datetime.datetime.fromtimestamp(since)
-                activities = self.manager.get_activities(url, since)
-                logger.debug("Delivering work: %s", activities)
-                self._deliver_work(activities, url)
-            time.sleep(sleep_time)
+            try:
+                work_list = self._get_work()
+                logger.info("Received work_list of size: %s" % len(work_list))
+                logger.debug("Received work_list: %s", work_list)
+                for work in work_list:
+                    url = work['url']
+                    since = work['since']
+                    if since:
+                        since = datetime.datetime.fromtimestamp(since)
+                    activities = self.manager.get_activities(url, since)
+                    logger.debug("Delivering work: %s", activities)
+                    self._deliver_work(activities, url)
+                time.sleep(sleep_time)
+            except Exception as e:
+                logger.exception(e)
+                time.sleep(sleep_time * 10)
     
     def _get_work(self):
         '''
