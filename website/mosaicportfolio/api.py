@@ -106,7 +106,9 @@ class RepositoryAuthorization(Authorization):
 class RepositoryResource(ModelResource):
 
     project = fields.ToOneField(ProjectResource, 'project')
+
     url = fields.CharField()
+    concrete_type = fields.CharField()
 
     class Meta:
         queryset = ProjectRepository.objects.all()
@@ -119,13 +121,17 @@ class RepositoryResource(ModelResource):
     def dehydrate_url(self, bundle):
         return bundle.obj.repository.url
 
-    def hydrate_url(self, bundle):
+    def dehydrate_concrete_type(self, bundle):
+        return bundle.obj.repository.concrete_type
 
-        concrete_type = 'git' # hardcoded right now, change as soon as we support additional repositories
+    def hydrate(self, bundle):
 
-        boundle.data['repository'] = Repository.objects.get_or_create(
-            concrete_type=concrete_type,
-            url=bundle.data['url'])
+        bundle.obj.repository, created = Repository.objects.get_or_create(
+            concrete_type = bundle.data['concrete_type'],
+            url = bundle.data['url']
+        )
+
+        return bundle
 
 class GraphObject(object):
     def __init__(self, initial=None):

@@ -78,26 +78,57 @@
             {% for project in portfolio.projects.all %}
 
             <div class="project">
-            <input type="hidden" class="project-id" value="{{ project.pk }}" />
-            <div class="row">
-                <div class="span8">
-                    <h2 style="display: inline;" class="editable project-name">{{ project.name|sanitize_html }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line|sanitize_html }}</small></h2>
-                    <!--<span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>-->
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span5 editable project-description">
-                    <p>{{ project.description|sanitize_html }}</p>
-                </div>
-
-                <div class="span3">
-                    <div class="graph" id="projectgraph{{ project.pk }}">
-                        <img src="http://placehold.it/260x100" alt="">
-                        <h5>Activity between 2009-2012</h5>
+                <input type="hidden" class="project-id" value="{{ project.pk }}" />
+                <div class="row">
+                    <div class="span8">
+                        <h2 style="display: inline;" class="editable project-name">{{ project.name|sanitize_html }}</h2> <h2 style="display: inline;"><small class="editable project-tagline">{{ project.tag_line|sanitize_html }}</small></h2>
+                        <!--<span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>-->
                     </div>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="span5">
+                        <div class="editable project-description">
+                            <p>{{ project.description|sanitize_html }}</p>
+                        </div>
+
+                        {% for repository in project.projectrepository_set.all %}
+                            <div class="repository">
+                            <form class="form-inline" class="row">
+                                <input type="hidden" class="repository-id" value="{{ repository.pk }}" />
+
+                                <select class="repository-type span1">
+                                    <option {% ifequal repository.repository.concrete_type 'git' %}selected{% endifequal %} value="git">git</option>
+                                    <option {% ifequal repository.repository.concrete_type 'mercurial' %}selected{% endifequal %} value="mercurial">mercurial</option>
+                                </select>
+                                <input class="repository-url span2 input-small" type="text" value="{{ repository.repository.url }}" />
+                                <input class="repository-login  span2 input-small" type="text" value="{{ repository.login }}" />
+
+                            </form>
+                            </div>
+                        {% endfor %}
+
+                        <div class="repository-sample">
+                        <form class="form-inline" class="row">
+
+                            <select class="repository-type span1">
+                                <option value="git">git</option>
+                                <option value="mercurial">mercurial</option>
+                            </select>
+                            <input type="text" class="repository-url span2 input-small" placeholder="Repository URL" />
+                            <input type="text" class=" repository-login span2 input-small" placeholder="Commit username" />
+                        </form>
+                        </div>
+                    </div>
+
+                    <div class="span3">
+                        <div class="graph" id="projectgraph{{ project.pk }}">
+                            <img src="http://placehold.it/260x100" alt="">
+                            <h5>Activity between 2009-2012</h5>
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             {% empty %}
