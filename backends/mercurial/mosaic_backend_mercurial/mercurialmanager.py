@@ -25,7 +25,7 @@ class MercurialManager(object):
  
     def _to_dict(self, activity):
         import time
-        return {'date': time.mktime(activity.date.timetuple()), 'login': activity.author}
+        return {'date': time.mktime(activity.date.timetuple()), 'login': activity.login}
     def _get_repository_location(self, url):
         '''
         Creates the absolute path of the repository with the given url
