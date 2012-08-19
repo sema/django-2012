@@ -88,7 +88,16 @@ class ProjectRepository(models.Model):
     repository = models.ForeignKey(Repository)
 
     login = models.CharField(max_length=200)
-
+    
+    def login_exits(self):
+        return False
+    
+    def activity_count(self):
+        return RepositoryActivity.objects.filter(repository=self.repository).count()
+        
+    def login_activity_count(self):
+        return RepositoryActivity.objects.filter(repository=self.repository).filter(login=self.login).count()
+        
     class Meta:
         verbose_name_plural = "project repositories"
 
