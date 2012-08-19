@@ -1,3 +1,6 @@
+// Load the Visualization API
+google.load('visualization', '1.0', {'packages':['corechart']});
+
 $(
     /**
      * Simple Google Charts wrapper for drawing activity graphs. Will make callbacks to server for data. 
@@ -26,9 +29,6 @@ $(
                     );
         }
 
-        // Load the Visualization API
-        // google.load('visualization', '1.0', {'packages':['corechart']});
-
         // Set a callback to run when the Google Visualization API is loaded.
         google.setOnLoadCallback(function(){
                                      drawVisualization(
@@ -41,7 +41,7 @@ $(
                                              ['2007',1968113, 4013653,   1037079,  1207029, 6420270,19564053],
                                              ['2008',1901067, 6792087,   1037327,  1284795, 6240921,19830493]
                                          ]
-                                         , "My title", 'visualization', 600, 400, 'activities', 'date'
+                                         , "My title", 'graph', 600, 400, 'activities', 'date'
 
                                      );
                                  }
