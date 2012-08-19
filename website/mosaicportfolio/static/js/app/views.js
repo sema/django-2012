@@ -7,11 +7,12 @@ var RepositoryView = Backbone.View.extend({
     initialize: function(options) {
         this.id = this.$('.repository-id').val();
 
-        this.projectUri = options.projectUri;
+        this.projectModel = options.projectModel;
 
         this.applicationState = options.applicationState;
-        this.applicationState.on('save', this.save, this);
         this.applicationState.on('change', this.render, this);
+
+        this.projectModel.on('save', this.save, this);
     },
 
     render: function() {
@@ -21,7 +22,6 @@ var RepositoryView = Backbone.View.extend({
             this.$el.hide();
         }
 
-
     },
 
     save: function() {
@@ -29,11 +29,14 @@ var RepositoryView = Backbone.View.extend({
             return;
         }
 
+        console.log('saving');
+        console.log(this.projectModel.get('resource_uri'));
+
         var repository = new Repository({
             url: this.$('.repository-url').val(),
             concrete_type: this.$('.repository-type').val(),
             login: this.$('.repository-login').val(),
-            project: this.projectUri
+            project: this.projectModel.get('resource_uri')
         });
 
         if (this.id != undefined) {
@@ -50,7 +53,6 @@ var RepositoryView = Backbone.View.extend({
 var ProjectView = Backbone.View.extend({
 
     userModel: null,
-    projectUri: null,
 
     initialize: function(options) {
         this.userModel = options.userModel;
@@ -60,15 +62,16 @@ var ProjectView = Backbone.View.extend({
         this.applicationState.on('change', this.render, this);
 
         var id = this.$('.project-id').val();
-        this.projectUri = '/api/rest/v1/project/' + id + '/';
 
         if (id != undefined && id != '') {
             this.model = new Project({
                 id: id,
-                resource_uri: this.projectUri
+                resource_uri: '/api/rest/v1/project/' + id + '/'
             });
+
             var graphid = this.$('.graph').attr('id');
             ActivityGraphing().drawProjectGraph(id, 100, 260, graphid, true);
+
         } else {
             this.model = new Project();
         }
@@ -78,7 +81,7 @@ var ProjectView = Backbone.View.extend({
             repository = new RepositoryView({
                 el: $(elm),
                 applicationState: that.applicationState,
-                projectUri: that.projectUri
+                projectModel: that.model
             });
 
             repository.render();
@@ -87,7 +90,7 @@ var ProjectView = Backbone.View.extend({
         repository = new RepositoryView({
             el: this.$('.repository-sample'),
             applicationState: that.applicationState,
-            projectUri: that.projectUri
+            projectModel: that.model
         });
 
         repository.render();
@@ -103,8 +106,11 @@ var ProjectView = Backbone.View.extend({
         this.model.set('tag_line', this.$('.project-tagline').html());
         this.model.set('description', this.$('.project-description').html());
         this.model.set('user', this.userModel.get('resource_uri'));
-        this.model.save();
-        this.model.fetch();
+
+        var that = this;
+        this.model.save().success(function() {
+            that.model.trigger('save');
+        });
     }
 
 });

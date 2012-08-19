@@ -89,6 +89,8 @@ class ProjectResource(ModelResource):
         authentication = LoggedInAuthentication()
         authorization = ProjectAuthorization()
 
+        always_return_data = True
+
 class RepositoryAuthorization(Authorization):
     def is_authorized(self, request, object=None):
 
@@ -117,6 +119,8 @@ class RepositoryResource(ModelResource):
 
         authentication = LoggedInAuthentication()
         authorization = RepositoryAuthorization()
+
+        always_return_data = True
 
     def dehydrate_url(self, bundle):
         return bundle.obj.repository.url
