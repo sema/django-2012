@@ -10,6 +10,9 @@ class UserResource(ModelResource):
 
     class Meta:
         queryset = User.objects.all().select_related()
+        list_allowed_methods = ['get', 'put']
+        detail_allowed_methods = ['get', 'put']
+
         authentication = Authentication()
         authorization = Authorization()
 
@@ -18,5 +21,8 @@ class UserProfileResource(ModelResource):
 
     class Meta:
         queryset = UserProfile.objects.all()
+        list_allowed_methods = ['get', 'put']
+        detail_allowed_methods = ['get', 'put']
+
         authentication = Authentication()
         authorization = Authorization()
