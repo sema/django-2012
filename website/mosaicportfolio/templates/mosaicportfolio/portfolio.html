@@ -21,6 +21,7 @@
 
 {% block content %}
 
+    {% if isowner %}
     <section class="row portfolio-toolbar">
         <div class="span6 create-toolbar-left">&nbsp;</div>
         <div class="span6 create-toolbar-right">
@@ -28,15 +29,17 @@
             <a class="btn btn-primary pull-right doSave"><i class="icon-edit icon-white"></i> Save</a>
         </div>
     </section>
+    {% endif %}
 
     <section class="row portfolio-profile">
+
         <div class="span12">
             <input type="hidden" id="user_pk" value="{{ portfolio.pk }}"/>
             <h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name|sanitize_html }}{% else %}{{ portfolio.username }}{% endif %}</h1>
             <h2 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line|sanitize_html }}</h2>
 
         </div>
-        
+
         <div class="span12">
         <div class="row">
             <div class="span8">
@@ -50,7 +53,6 @@
                     {% endfor %}
                 </div>
 
-                <div id='usergraph'/>
             </div>
 
             <div class="span4">
@@ -138,7 +140,7 @@
 
             <h4>Overview</h4>
 
-            <div class="thumbnail">
+            <div class="thumbnail" id="usergraph">
                 <img src="http://placehold.it/360x100" alt="">
                 <h5>Activity between 2009-2012</h5>
             </div>
