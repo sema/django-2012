@@ -30,21 +30,21 @@
 
     <section class="row portfolio-profile">
         <div class="span12">
-
-            <h1 class="editable portfolio-name">{% if user.first_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h1>
-            <h2 class="editable portfolio-tagline">{{ user.get_profile.tag_line }}</h2>
+            <input type="hidden" id="user_pk" value="{{ portfolio.pk }}"/>
+            <h1 class="editable portfolio-name">{% if portfolio.first_name %}{{ portfolio.first_name }} {{ portfolio.last_name }}{% else %}{{ portfolio.portfolioname }}{% endif %}</h1>
+            <h2 class="editable portfolio-tagline">{{ portfolio.get_profile.tag_line }}</h2>
 
         </div>
         
         <div class="span12">
         <div class="row">
             <div class="span8">
-                <p class="editable portfolio-about">{{ user.get_profile.about }}</p>
+                <p class="editable portfolio-about">{{ portfolio.get_profile.about }}</p>
 
                 <div>
-                    <a href="mailto:{{ user.email }}" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
+                    <a href="mailto:{{ portfolio.email }}" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
 
-                    {% for link in user.links.all %}
+                    {% for link in portfolio.links.all %}
                         <a href="#" class="btn btn-primary btn-large"><i class="icon-globe icon-white"></i> Linked in</a>
                     {% endfor %}
                 </div>
@@ -61,6 +61,100 @@
             </div>
         </div>
         </div>
+    </section>
+
+    <section class="row">
+
+        <div class="span8 projects">
+
+            <a class="btn btn-primary pull-right newProject"><i class="icon-plus icon-white"></i> New Project</a>
+
+            <h4>Open Source Projects <span class="badge project-count"></span></h4>
+
+            <div class="project-list">
+            {% for project in portfolio.projects.all %}
+
+            <div class="row">
+                <div class="span8">
+                    <h2>{{ project.name }} <small>{{ project.tag_line }}</small></h2>
+                    <span class="label">Python</span> <span class="label label-info">Django</span> <span class="label label-success">Web</span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="span5">
+                    <p>{{ project.description }}</p>
+
+                    <a href="#">more...</a>
+                </div>
+
+                <div class="span3">
+                    <div class="thumbnail">
+                        <img src="http://placehold.it/260x100" alt="">
+                        <h5>Activity between 2009-2012</h5>
+                    </div>
+                </div>
+            </div>
+
+            {% empty %}
+
+            <div class="no-project-message">
+                <h2>No projects</h2>
+
+                {% if isowner %}
+                    <p class="alert alert-info">Improve your portfolio by adding projects you have worked on.</p>
+                {% endif %}
+            </div>
+
+            {% endfor %}
+            </div>
+
+            <div class="project-sample">
+            <input type="hidden" class="project-id" value="" />
+                <div class="row">
+                    <div class="span8">
+                        <h2 class="editable">Project name <small>short description</small></h2>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="span5 editable">
+                        <p>Insert long description here</p>
+                    </div>
+
+                    <div class="span3">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="span4">
+
+            <h4>Overview</h4>
+
+            <div class="thumbnail">
+                <img src="http://placehold.it/360x100" alt="">
+                <h5>Activity between 2009-2012</h5>
+            </div>
+
+            <table class="table table-condensed table-striped">
+                <tbody>
+                <tr>
+                    <td>..</td>
+                    <td>..</td>
+                </tr>
+                <tr>
+                    <td>..</td>
+                    <td>..</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
     </section>
 
 {% endblock %}

@@ -1,11 +1,20 @@
 [
     {
-        "pk": 2,
+        "pk": 1,
         "model": "mosaicportfolio.repository",
         "fields": {
             "url": "git://github.com/sema/django-2012.git",
             "concrete_type": "git",
             "last_updated": "2000-01-01T00:00:00Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "mosaicportfolio.repository",
+        "fields": {
+            "url": "git://github.com/sema/django-2011.git",
+            "concrete_type": "git",
+            "last_updated": "1999-01-01T00:00:00Z"
         }
     },
     {
@@ -66,7 +75,8 @@
         "fields": {
             "description": "some description",
             "user": 1,
-            "name": "some project"
+            "name": "some project",
+            "tag_line": "some project"
         }
     }
 ]

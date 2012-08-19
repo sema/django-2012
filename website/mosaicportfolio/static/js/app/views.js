@@ -1,7 +1,81 @@
 
+var ProjectView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.applicationState = options.applicationState;
+        this.applicationState.on('save', this.save, this);
+
+        if (this.$('.project-id').val() != '') {
+            this.mode = new
+        }
+    },
+
+    render: function() {
+
+    },
+
+    save: function() {
+
+    }
+
+});
+
+var ProjectsView = Backbone.View.extend({
+
+    applicationState: null,
+
+    events: {
+        'click .newProject': 'newProject'
+    },
+
+    initialize: function(options) {
+        this.applicationState = options.applicationState;
+
+        this.applicationState.on('change', this.render, this);
+
+        $('.project-sample').hide();
+    },
+
+    render: function() {
+
+        var count = this.$('.project').length;
+
+        this.$('.project-count').html(count);
+
+        if (count > 0) {
+            this.$('.no-project-message').hide();
+        }
+
+        if (this.applicationState.get('editMode') == false) {
+            this.$('.newProject').hide();
+        } else {
+            this.$('.newProject').show();
+        }
+    },
+
+    newProject: function() {
+        var projectDom = $('.project-sample').clone();
+        projectDom.removeClass('project-sample');
+        projectDom.addClass('project');
+        projectDom.show();
+
+        new ProjectView({
+            el: projectDom,
+            applicationState: this.applicationState
+        }).render();
+
+        $('.project-list').prepend(projectDom);
+
+        this.render();
+    }
+
+
+
+});
+
 var PortfolioPage = Backbone.View.extend({
 
-    editMode: false,
+    applicationState: null,
 
     events: {
         'click .doEdit': 'editHandler',
@@ -10,14 +84,23 @@ var PortfolioPage = Backbone.View.extend({
 
     initialize: function(options) {
 
+        this.applicationState = options.applicationState;
         this.userModel = options.userModel;
 
-        $('.editabl').hallo({
+        this.applicationState.on('change', this.render, this);
+        this.applicationState.on('save', this.save, this);
+
+        $('.editable').hallo({
             plugins: {
                 'halloformat': {}
             },
             editable: false
         });
+
+        new ProjectsView({
+            el: $('.projects'),
+            applicationState: this.applicationState
+        }).render();
 
     },
 
@@ -26,7 +109,7 @@ var PortfolioPage = Backbone.View.extend({
         var editBtn = $('.doEdit');
         var saveBtn = $('.doSave');
 
-        if (this.editMode) {
+        if (this.applicationState.get('editMode')) {
             editBtn.hide();
             saveBtn.show();
         } else {
@@ -37,8 +120,8 @@ var PortfolioPage = Backbone.View.extend({
         var that = this;
         $('.editable').each(function(index, element) {
 
-            $(element).hallo({editable: that.editMode});
-            if (that.editMode) {
+            $(element).hallo({editable: that.applicationState.get('editMode')});
+            if (that.applicationState.get('editMode')) {
                 $(element).addClass('editable-enabled');
             } else {
                 $(element).removeClass('editable-enabled');
@@ -50,25 +133,29 @@ var PortfolioPage = Backbone.View.extend({
 
     editHandler: function() {
 
-        this.editMode = true;
-        this.render();
+        this.applicationState.set('editMode', true);
+        this.applicationState.change();
 
     },
 
     saveHandler: function() {
 
-        this.editMode = false;
+        this.applicationState.set('editMode', false);
+        this.applicationState.change();
+
+        this.applicationState.trigger('save');
+
+    },
+
+    save: function() {
 
         var profile = this.userModel.get('profile');
         profile['tag_line'] = $('.portfolio-tagline').html();
         profile['about'] = $('.portfolio-about').html();
-
+console.log($('.portfolio-name').html());
         this.userModel.set('first_name', $('.portfolio-name').html());
         this.userModel.set('profile', profile);
         this.userModel.save();
-
-        this.render();
-
     }
 
 });

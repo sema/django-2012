@@ -47,15 +47,16 @@ class UserSite(models.Model):
         return "%s: %s@%s" % (self.user, self.login, self.concrete_type)
 
 class Project(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, related_name='projects')
     name = models.CharField(max_length=200)
+    tag_line = models.CharField(max_length=200)
     description = models.TextField()
 
     def __str__(self):
         return "%s@%s" % (self.user, self.name)
 
 class Repository(models.Model):
-    projects = models.ManyToManyField(Project, through='ProjectRepository')
+    projects = models.ManyToManyField(Project, through='ProjectRepository', related_name='repositories')
 
     url = models.CharField(max_length=200)
     concrete_type = models.CharField(max_length=16, choices=RepositoryKind.values)
