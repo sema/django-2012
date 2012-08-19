@@ -57,7 +57,7 @@ class MercurialManager(object):
             if not self._has_repository(url):
                 self._clone_and_get_repo(url, location)
             repo = Repo(location)
-            self._pull(location)
+            self._update(location)
             return [self._to_dict(a) for a in
                         self._repo2activities(repo, since)]
         except Exception as e:
@@ -93,7 +93,7 @@ class MercurialManager(object):
         logger.debug("found %d activities: " % len(simple_activities))
         return simple_activities
          
-    def _pull(self, location):
+    def _update(self, location):
         """
         Updates the specified repository 
         """

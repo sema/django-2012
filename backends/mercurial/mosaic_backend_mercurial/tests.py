@@ -53,7 +53,7 @@ class Test(unittest.TestCase):
         self.assertIsNotNone(repo)
     
     def test_can_update(self):
-        scraper._pull(local_url)
+        scraper._update(local_url)
     
     def test_repository_naming(self):
         url = "foobarbaz"
