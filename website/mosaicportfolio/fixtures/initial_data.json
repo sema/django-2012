@@ -1,0 +1,90 @@
+[
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "testuser",
+            "email": "example@example.org"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.repository",
+        "fields": {
+            "url": "git://github.com/sema/django-2012.git",
+            "concrete_type": "git",
+            "last_updated": "2000-01-01T00:00:00Z"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "mosaicportfolio.repository",
+        "fields": {
+            "url": "git://github.com/sema/django-2011.git",
+            "concrete_type": "git",
+            "last_updated": "1999-01-01T00:00:00Z"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.wiki",
+        "fields": {
+            "url": "some wiki url",
+            "concrete_type": "github"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.issuetracker",
+        "fields": {
+            "url": "some url",
+            "concrete_type": "github"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.projectissuetracker",
+        "fields": {
+            "project": 1,
+            "login": "esbena",
+            "issue_tracker": 1
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.issuetrackeractivity",
+        "fields": {
+            "date": "2012-08-18T01:55:11Z",
+            "login": "esbena",
+            "issue_tracker": 1
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.wikiactivity",
+        "fields": {
+            "date": "2012-08-18T01:57:22Z",
+            "wiki": 1,
+            "login": "esbena"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.usersite",
+        "fields": {
+            "concrete_type": "1",
+            "login": "esbena",
+            "user": 1
+        }
+    },
+    {
+        "pk": 1,
+        "model": "mosaicportfolio.project",
+        "fields": {
+            "description": "some description",
+            "user": 1,
+            "name": "some project",
+            "tag_line": "some project"
+        }
+    }
+]
