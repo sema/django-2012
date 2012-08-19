@@ -28,7 +28,7 @@ MOSAiC consist of two major components:
 
 Currently, sources are implemented for git and mercurial
 repositories, with additional sources (issue trackers,
-wikis, code hosting sites) are planned. The website contains
+wikis, code hosting sites) planned. The website contains
 a worklist of sources it want new information from, and each
 source can query the website for work. Sources are language
 agnostic, as they communicate with the website through HTTP
