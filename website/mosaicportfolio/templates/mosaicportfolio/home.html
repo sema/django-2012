@@ -6,12 +6,17 @@
 
     <div class="hero-unit">
             <h1>Need a Code Portfolio?</h1>
-            <h2>Stitch together a MOSAiC of your contributions to Open Source projects</h2>
-
-            <p>Use it to show your work to fellow programmers and potential employers. We help you build the portfolio and provide live statistics on your contributions to Open Source projects of your choice.</p>
-            <p>Why? <a href="http://www.codinghorror.com/blog/2004/10/a-programmers-portfolio.html">Every programmer should have a Portfolio</a> that's why.</p>
-            <br/>
-            <p><a href="{% url registration_register %}" class="btn btn-primary btn-large">Let us host your portfolio</a>  <a href="http://github.com/sema/django-2012" class="btn btn-primary btn-large">Host it yourself</a></p>
+            <section class="row">
+            <span class='span7'>
+	            <h2>Stitch together a MOSAiC of your contributions to Open Source projects</h2>
+	
+	            <p>Use it to show your work to fellow programmers and potential employers. We help you build the portfolio and provide live statistics on your contributions to Open Source projects of your choice.</p>
+	            <p>Why? <a href="http://www.codinghorror.com/blog/2004/10/a-programmers-portfolio.html">Every programmer should have a Portfolio</a> that's why.</p>
+	            <br/>
+	            <p><a href="{% url registration_register %}" class="btn btn-primary btn-large">Let us host your portfolio</a>  <a href="http://github.com/sema/django-2012" class="btn btn-primary btn-large">Host it yourself</a></p>
+	        </span>
+	        <span class='span4'><a href='{{ STATIC_URL }}img/screenshot.png' class='thumbnail'><img src="{{ STATIC_URL }}img/screenshot.png" alt='example-screenshot'/></a></span>
+            </section>
     </div>
 
 </section>
