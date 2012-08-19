@@ -190,3 +190,6 @@ LOGGING = {
         }          
     },
 }
+
+HTML_SANITIZER_ALLOWED_TAGS = ['div', 'p', 'br']
+HTML_SANITIZER_ALLOWED_ATTR = []

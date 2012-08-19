@@ -121,10 +121,14 @@ var PortfolioPage = Backbone.View.extend({
 
         $('.editable').hallo({
             plugins: {
-                'halloformat': {}
+                'halloformat': {},
+                'halloblock': {},
+                'hallolists': {},
+                'halloreundo': {},
+                'hallolink': {}
             },
             editable: false
-        });
+        })
 
         new ProjectsView({
             el: $('.projects'),
