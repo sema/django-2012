@@ -17,7 +17,6 @@ $(function() {
 
       portfolioPage.render();
 
-      ActivityGraphing().drawUserGraph(user.get('id'), 100, 360, "usergraph");
 
-
+      ActivityGraphing().drawUserGraph(user.get('id'), 100, 360, "usergraph", false);
   });

@@ -16,13 +16,11 @@ var ProjectView = Backbone.View.extend({
                 id: id,
                 resource_uri: '/api/rest/v1/project/' + id + '/'
             });
+            var graphid = this.$('.graph').attr('id');
+            ActivityGraphing().drawProjectGraph(id, 100, 260, graphid, true);
         } else {
             this.model = new Project();
         }
-
-        var graphid = this.$('.graph').attr('id');
-        console.log(graphid);
-        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 100, 260, graphid);
     },
 
     render: function() {
@@ -190,7 +188,7 @@ var PortfolioPage = Backbone.View.extend({
         var profile = this.userModel.get('profile');
         profile['tag_line'] = $('.portfolio-tagline').html();
         profile['about'] = $('.portfolio-about').html();
-console.log($('.portfolio-name').html());
+
         this.userModel.set('first_name', $('.portfolio-name').html());
         this.userModel.set('profile', profile);
         this.userModel.save();
