@@ -3,7 +3,7 @@
 {% block extraheaders %}
 <link href="{{ STATIC_URL }}css/create-ui.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}css/midgardnotif.css" rel="stylesheet">
-
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.ui.custom.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.rdfquery.min.js"></script>
@@ -15,7 +15,9 @@
 <script type="text/javascript" src="{{ STATIC_URL }}js/hallo.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/create.js"></script>
 
+
 <script type="text/javascript" src="{{ STATIC_URL }}js/mosaic.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/graphing.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -32,7 +34,7 @@
             <h2 property="tagline">{{ user.get_profile.tag_line }}</h2>
 
         </div>
-
+        
         <div class="span12">
         <div class="row">
             <div class="span8">
@@ -42,6 +44,7 @@
                 <a href="mailto:" class="btn btn-primary btn-large"><i class="icon-envelope icon-white"></i> E-mail me</a>
                 <a href="#" class="btn btn-primary btn-large"><i class="icon-globe icon-white"></i> Linked in</a>
                 -->
+                <div id='visualization'/>
             </div>
 
             <div class="span4">
