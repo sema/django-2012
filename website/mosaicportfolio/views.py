@@ -112,7 +112,7 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
             return HttpResponse()
 
         except simplejson.JSONDecodeError as e:
-            logger.execption(e)
+            logger.exception(e)
             return HttpResponseBadRequest()
         logger.debug("POST5")
     else:
