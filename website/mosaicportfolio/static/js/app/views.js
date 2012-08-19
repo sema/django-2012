@@ -73,10 +73,6 @@ var ProjectView = Backbone.View.extend({
             this.model = new Project();
         }
 
-        var graphid = this.$('.graph').attr('id');
-
-        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 100, 260, graphid);
-
         var that = this;
         this.$('.repository').each(function(index, elm) {
             repository = new RepositoryView({

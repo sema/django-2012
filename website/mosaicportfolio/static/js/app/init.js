@@ -15,8 +15,9 @@ $(function() {
                                                 applicationState: applicationState
                                             });
 
-      portfolioPage.render();
-
-
-      ActivityGraphing().drawUserGraph(user.get('id'), 100, 360, "usergraph", false);
+      google.setOnLoadCallback(
+          function(){
+              portfolioPage.render();
+              ActivityGraphing().drawUserGraph(user.get('id'), 100, 360, "usergraph", false);
+          });
   });

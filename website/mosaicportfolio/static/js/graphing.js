@@ -36,6 +36,8 @@ ActivityGraphing = function(){
             var data = { title: model.get('title'), width: width, height:height, vTitle: model.get("vTitle"), hTitle: model.get("hTitle"),
                          table: model.get('table')               
                        };
+            if (data.table[0].length == 1)
+                return;
             drawVisualization(data.table, data.title, data.height, data.width, target, compact, data.vTitle, data.hTitle);
         };
         return draw;
@@ -43,8 +45,7 @@ ActivityGraphing = function(){
 
     function drawUserGraph(user, height, width, target, compact){
         var draw = delayedDraw(height, width, target, compact);
-        new UserGraph({id:user}).
-            fetch({success: draw});
+        new UserGraph({id:user}).fetch({success: draw});
     }
     function drawProjectGraph(project, height, width, target, compact){
         var draw = delayedDraw(height, width, target, compact);
