@@ -10,6 +10,8 @@ import api
 v1_api = Api(api_name='v1')
 v1_api.register(api.UserProfileResource())
 v1_api.register(api.UserResource())
+v1_api.register(api.UserGraphResource())
+v1_api.register(api.ProjectGraphResource())
 
 urlpatterns = patterns('mosaicportfolio.views',
     url(r'^api/rest/', include(v1_api.urls)),
