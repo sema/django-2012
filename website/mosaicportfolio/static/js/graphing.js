@@ -7,6 +7,7 @@ $(
      * Template modified from Google charts Column Chart example.
      */
     function(){
+
         function drawVisualization(arrays, title, target_id, width, height, vTitle, hTitle) {
             // Create and populate the data table.
             var data = 
@@ -24,9 +25,9 @@ $(
                       hAxis: {title: hTitle}}
                     );
         }
-        
+
         // Load the Visualization API
-        google.load('visualization', '1.0', {'packages':['corechart']});
+        // google.load('visualization', '1.0', {'packages':['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
         google.setOnLoadCallback(function(){
