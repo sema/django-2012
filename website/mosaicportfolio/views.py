@@ -33,10 +33,6 @@ def portfolio(request, username):
         'isowner': isowner
     })
 
-@login_required()
-def profile_edit(request):
-    return render(request, "mosaicportfolio/profile_edit.html")
-
 def api_worklist(request, abstract_type, concrete_type):
     """
     Returns a list of work items (as of now this list has only one item in it at a time)

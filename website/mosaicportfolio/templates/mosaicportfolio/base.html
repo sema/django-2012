@@ -24,7 +24,7 @@
 
     <div class="right text-right">
         {% if user.is_authenticated %}
-        <p>Welcome, <a href="{% url portfolio user.username %}">{{ user.username }}</a>. <a href="{% url profile_edit %}">Edit profile</a>, <a href="{% url auth_logout %}">Logout</a></p>
+        <p>Welcome, <a href="{% url portfolio user.username %}">{{ user.username }}</a>. <a href="{% url auth_logout %}">Logout</a></p>
         {% else %}
         <a href="{% url registration_register %}">Register</a> or  <a href="{% url auth_login %}">Log In</a> <br/>
         Log in with {% for name in social_auth.backends %}
