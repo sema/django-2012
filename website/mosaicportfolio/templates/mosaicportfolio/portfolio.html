@@ -99,7 +99,7 @@
 
                                 <select class="repository-type span1">
                                     <option {% ifequal repository.repository.concrete_type 'git' %}selected{% endifequal %} value="git">git</option>
-                                    <option {% ifequal repository.repository.concrete_type 'mercurial' %}selected{% endifequal %} value="mercurial">mercurial</option>
+                                    <option {% ifequal repository.repository.concrete_type 'hg' %}selected{% endifequal %} value="hg">hg</option>
                                 </select>
                                 <input class="repository-url span2 input-small" type="text" value="{{ repository.repository.url }}" />
                                 <input class="repository-login  span2 input-small" type="text" value="{{ repository.login }}" />
@@ -113,7 +113,7 @@
 
                             <select class="repository-type span1">
                                 <option value="git">git</option>
-                                <option value="mercurial">mercurial</option>
+                                <option value="hg">hg</option>
                             </select>
                             <input type="text" class="repository-url span2 input-small" placeholder="Repository URL" />
                             <input type="text" class=" repository-login span2 input-small" placeholder="Commit username" />
