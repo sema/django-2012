@@ -98,6 +98,11 @@ var ProjectView = Backbone.View.extend({
     },
 
     render: function() {
+        if (this.applicationState.get('editMode')) {
+            this.$(".username-warning").show();
+        }else{
+            this.$(".username-warning").hide();
+        }
     },
 
     save: function() {
