@@ -1,11 +1,7 @@
 from tastypie.resources import ModelResource, Resource, fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
-from mosaicportfolio.models import User, UserProfile, Project
-from tastypie.bundle import Bundle
-from tastypie.resources import Resource, ModelResource, fields
-from mosaicportfolio.models import User, UserProfile, Project
-
+from mosaicportfolio.models import User, UserProfile, Project, ProjectRepository, Repository
 
 import graphing
 import logging
@@ -91,7 +87,45 @@ class ProjectResource(ModelResource):
         detail_allowed_methods = ['get', 'put', 'post']
 
         authentication = LoggedInAuthentication()
-        authorization = Authorization()
+        authorization = ProjectAuthorization()
+
+class RepositoryAuthorization(Authorization):
+    def is_authorized(self, request, object=None):
+
+        if object is None:
+            return True
+
+        return object.project.user.pk == request.user.pk
+
+    def apply_limits(self, request, object_list):
+        if request and hasattr(request, 'user'):
+            return object_list.filter(project__user=request.user)
+
+        return object_list.none()
+
+class RepositoryResource(ModelResource):
+
+    project = fields.ToOneField(ProjectResource, 'project')
+    url = fields.CharField()
+
+    class Meta:
+        queryset = ProjectRepository.objects.all()
+        list_allowed_methods = ['get', 'put', 'post']
+        detail_allowed_methods = ['get', 'put', 'post']
+
+        authentication = LoggedInAuthentication()
+        authorization = RepositoryAuthorization()
+
+    def dehydrate_url(self, bundle):
+        return bundle.obj.repository.url
+
+    def hydrate_url(self, bundle):
+
+        concrete_type = 'git' # hardcoded right now, change as soon as we support additional repositories
+
+        boundle.data['repository'] = Repository.objects.get_or_create(
+            concrete_type=concrete_type,
+            url=bundle.data['url'])
 
 class GraphObject(object):
     def __init__(self, initial=None):
