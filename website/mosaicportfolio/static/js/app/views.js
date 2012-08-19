@@ -19,6 +19,7 @@ var ProjectView = Backbone.View.extend({
         } else {
             this.model = new Project();
         }
+        ActivityGraphing().drawUserGraph(this.userModel.get('id'), 400, 800, "usergraph");
     },
 
     render: function() {
