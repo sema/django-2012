@@ -5,10 +5,10 @@ from mosaicportfolio.models import RepositoryActivity, Repository, \
 import logging
 logger = logging.getLogger(__name__)
 def make_user_graph(user):
-    project_repositories = ProjectRepository.objects.filter(project__user=user).prefetch_related('repository__repository_activity_set')
+    project_repositories = ProjectRepository.objects.filter(project__user=user)#.prefetch_related('repository__repositoryactivity')
     grouped_activities = {}
     for prep in project_repositories:
-        grouped_activities[prep.project.name] = RepositoryActivity.objects.filter(repository=prep.repository__pk).filter(login=prep.login)
+        grouped_activities[prep.project.name] = RepositoryActivity.objects.filter(repository=prep.repository).filter(login=prep.login)
     return Graph(_("Activity graph for %s") % user.email, TableData(grouped_activities)).to_dict()
 
 def make_project_graph(project):
