@@ -36,7 +36,7 @@ ActivityGraphing = function(){
             var data = { title: model.get('title'), width: width, height:height, vTitle: model.get("vTitle"), hTitle: model.get("hTitle"),
                          table: model.get('table')               
                        };
-            if (data.table[0].length == 1)
+            if (data.table.length <= 1)
                 return;
             drawVisualization(data.table, data.title, data.height, data.width, target, compact, data.vTitle, data.hTitle);
         };
