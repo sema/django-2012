@@ -3,6 +3,7 @@
 	<name>mosaic_backend_mercurial</name>
 	<comment></comment>
 	<projects>
+		<project>mosaic_backend</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -1,0 +1,16 @@
+data/docs/_theme/nature/theme.conf.i
+data/setup.cfg.i
+data/MANIFEST.in.i
+data/setup.py.i
+data/LICENCE.i
+data/docs/Makefile.i
+data/bitbucket/__init__.py.i
+data/docs/conf.py.i
+data/tests/__init__.py.i
+data/.hgignore.i
+data/bitbucket/api.py.i
+data/docs/index.rst.i
+data/README.rst.i
+data/docs/_theme/nature/static/pygments.css.i
+data/docs/_theme/nature/static/nature.css_t.i
+data/tests/pythonbitbucket.py.i
