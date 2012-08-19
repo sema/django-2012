@@ -15,7 +15,7 @@ class Worker(object):
     Generic worker class. Will periodically do work for the MOSAiC server when instantiated with an 'activity manager'.
     '''
     
-    def __init__(self, mosaic_url, manager):
+    def __init__(self, mosaic_url, manager, api_key="SUPER_SECRET"):
         '''
         Constructs a worker for the MOSAiC server at the specified URL.
         The supplied manager should specify its capabilities regarding
@@ -25,14 +25,15 @@ class Worker(object):
         abstract_activity_type = 'repository'
         
         The manager should also be able to perform work when requested to: 
-        A method: get_activies(url, since) : [activity-dict] is required 
+        A method: 
+        get_activies(url, since) : [activity-dict]
+        is required 
       
         '''
-        api_key = "SUPER_SECRET"
         self.manager = manager
         parameters = urllib.urlencode({'token': api_key})
         common_path = "%s/api/worklist/%s/%s" % (mosaic_url, manager.abstract_activity_type, manager.concrete_activity_type)
-        self.get_url = "%s?%s" % (common_path,parameters)  
+        self.get_url = "%s?%s" % (common_path, parameters)  
         self.post_url = "%s/deliver/?%s" % (common_path, parameters)
         logger.info("Initialized worker for %s" % common_path)
     
