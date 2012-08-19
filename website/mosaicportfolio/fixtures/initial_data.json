@@ -1,6 +1,14 @@
 [
     {
         "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "testuser",
+            "email": "example@example.org"
+        }
+    },
+    {
+        "pk": 1,
         "model": "mosaicportfolio.repository",
         "fields": {
             "url": "git://github.com/sema/django-2012.git",

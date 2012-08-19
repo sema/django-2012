@@ -30,8 +30,8 @@ class APITest(TestCase):
         self.assertEqual(1, len(json))
 
         item = json[0]
-        self.assertEqual('git://github.com/sema/django-2012.git', item['url'])
-        self.assertEqual(1345276614.0, item['since'])
+        self.assertEqual('git://github.com/sema/django-2011.git', item['url'])
+        self.assertEqual(None, item['since'])
 
         # now update repository 1 and see if we get the now "older" repository 2
 
@@ -89,7 +89,7 @@ class APITest(TestCase):
             'abstract_type': 'repository',
             'concrete_type': 'git'
         }) + self.token, data={
-            'payload': '{"url": "http://repository1", "activities": [{"login": "%s", "date": "%s"}]}' % (login, date)
+            'payload': '{"url": "git://github.com/sema/django-2012.git", "activities": [{"login": "%s", "date": "%s"}]}' % (login, date)
         })
 
         self.assertEqual(200, response.status_code)
