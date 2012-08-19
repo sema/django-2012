@@ -67,6 +67,8 @@ var ProjectView = Backbone.View.extend({
                 id: id,
                 resource_uri: this.projectUri
             });
+            var graphid = this.$('.graph').attr('id');
+            ActivityGraphing().drawProjectGraph(id, 100, 260, graphid, true);
         } else {
             this.model = new Project();
         }
@@ -260,7 +262,7 @@ var PortfolioPage = Backbone.View.extend({
         var profile = this.userModel.get('profile');
         profile['tag_line'] = $('.portfolio-tagline').html();
         profile['about'] = $('.portfolio-about').html();
-console.log($('.portfolio-name').html());
+
         this.userModel.set('first_name', $('.portfolio-name').html());
         this.userModel.set('profile', profile);
         this.userModel.save();
