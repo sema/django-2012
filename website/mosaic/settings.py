@@ -94,6 +94,7 @@ INSTALLED_APPS = (
     'social_auth',
     'crispy_forms',
     'tastypie',
+    'south',
 
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
