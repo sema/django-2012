@@ -2,5 +2,6 @@
 
 {% block content %}
 
-   logged out
+   <h2>You are now logged out</h2>
+   <p>Return to our <a href="{% url home %}">frontpage</a> or <a href="{% url auth_login %}">log in</a> again...</p>
 {% endblock %}

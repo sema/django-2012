@@ -12,6 +12,7 @@ v1_api.register(api.UserProfileResource())
 v1_api.register(api.UserResource())
 v1_api.register(api.UserGraphResource())
 v1_api.register(api.ProjectGraphResource())
+v1_api.register(api.ProjectResource())
 
 urlpatterns = patterns('mosaicportfolio.views',
     url(r'^api/rest/', include(v1_api.urls)),
@@ -35,8 +36,6 @@ urlpatterns = patterns('mosaicportfolio.views',
     url(r'^password/reset/done/$', auth_views.password_reset_done, name='auth_password_reset_done'),
 
     url(r'^', include('social_auth.urls')),
-
-    url(r'^editprofile/', 'profile_edit', name='profile_edit'),
 
     url(r'^portfolio/(?P<username>\w+)/', 'portfolio', name='portfolio'),
     url(r'^portfolio/', 'portfolio_redirect', name='portfolio'),

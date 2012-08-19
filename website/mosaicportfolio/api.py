@@ -1,9 +1,15 @@
-from tastypie.resources import ModelResource, fields
+from tastypie.resources import ModelResource, Resource, fields
 from tastypie.authentication import Authentication
 from tastypie.authorization import Authorization
+<<<<<<< HEAD
 from mosaicportfolio.models import User, UserProfile, Project
 from tastypie.bundle import Bundle
 from tastypie.resources import Resource, ModelResource, fields
+=======
+
+from mosaicportfolio.models import User, UserProfile, Project
+
+>>>>>>> c30fef5e1e3aba316da251447321190c17251bf9
 import graphing
 import logging
 
@@ -30,6 +36,7 @@ class UserProfileResource(ModelResource):
 
         authentication = Authentication()
         authorization = Authorization()
+
 class GraphObject(object):
     def __init__(self, initial=None):
         self.__dict__['_data'] = {}
@@ -44,7 +51,8 @@ class GraphObject(object):
         self.__dict__['_data'][name] = value
 
     def to_dict(self):
-        return self._data    
+        return self._data
+
 class AbstractGraphResource(Resource):
     title = fields.CharField(attribute='title')
     hTitle = fields.CharField(attribute='hTitle')
@@ -69,3 +77,16 @@ class ProjectGraphResource(AbstractGraphResource):
         
     def obj_get(self, request=None, **kwargs):
         return GraphObject(initial = graphing.make_project_graph(Project.objects.get(pk=kwargs['pk'])))
+
+class ProjectResource(ModelResource):
+    user = fields.ToOneField(UserResource, 'user')
+
+    class Meta:
+        queryset = Project.objects.all()
+        list_allowed_methods = ['get', 'put', 'post']
+        detail_allowed_methods = ['get', 'put', 'post']
+
+        authentication = Authentication()
+        authorization = Authorization()
+
+

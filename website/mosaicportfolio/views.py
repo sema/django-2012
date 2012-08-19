@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import  User
 
 from .models import Repository, RepositoryActivity
 import logging
@@ -23,11 +24,14 @@ def portfolio_redirect(request):
     return redirect(reverse('portfolio', kwargs={'username': request.user.username}))
 
 def portfolio(request, username):
-    return render(request, "mosaicportfolio/portfolio.html")
+    user = get_object_or_404(User.objects.select_related(), username=username)
 
-@login_required()
-def profile_edit(request):
-    return render(request, "mosaicportfolio/profile_edit.html")
+    isowner = request.user.is_authenticated() and request.user.username == user.username
+
+    return render(request, "mosaicportfolio/portfolio.html", {
+        'portfolio': user,
+        'isowner': isowner
+    })
 
 def api_worklist(request, abstract_type, concrete_type):
     """
@@ -114,6 +118,6 @@ def api_worklist_deliver(request, abstract_type, concrete_type):
         except simplejson.JSONDecodeError as e:
             logger.exception(e)
             return HttpResponseBadRequest()
-        logger.debug("POST5")
+
     else:
         return Http404()
