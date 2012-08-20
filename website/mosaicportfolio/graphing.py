@@ -4,6 +4,10 @@ from mosaicportfolio.models import RepositoryActivity, Repository, \
     ProjectRepository
 import logging
 logger = logging.getLogger(__name__)
+
+def get_activities_for_project_repository(prep):
+    return RepositoryActivity.objects.filter(repository=prep.repository).filter(login=prep.login)
+
 def make_user_graph(user):
     '''
     Creates a Graph for all the activities of all the projects of a user.
@@ -11,7 +15,9 @@ def make_user_graph(user):
     project_repositories = ProjectRepository.objects.filter(project__user=user)
     grouped_activities = {}
     for prep in project_repositories:
-        grouped_activities[prep.project.name] = RepositoryActivity.objects.filter(repository=prep.repository).filter(login=prep.login)
+        if not grouped_activities.has_key(prep.project.name):
+            grouped_activities[prep.project.name] = []
+        grouped_activities[prep.project.name].extend(get_activities_for_project_repository(prep))
     return Graph(_("Activity graph"), TableData(grouped_activities)).to_dict()
 
 def make_project_graph(project):
@@ -19,9 +25,11 @@ def make_project_graph(project):
     Creates a Graph for all the activities of a project.
     '''
     project_repositories = ProjectRepository.objects.filter(project=project)
-    grouped_activities = {}
+    activities = []
     for prep in project_repositories:
-        grouped_activities[prep.project.name] = RepositoryActivity.objects.filter(repository=prep.repository).filter(login=prep.login)
+        activities.extend(get_activities_for_project_repository(prep))
+    grouped_activities = {}
+    grouped_activities[project.name] = activities
     return Graph(_("Activity graph"), TableData(grouped_activities)).to_dict()
 
 class Graph(object):
